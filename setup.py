@@ -1,8 +1,9 @@
 import os
 import requests
+from flask import Flask
 
 API_KEY = os.environ["API_KEY"]
-print(API_KEY)
+server = Flask(__name__)
 
 
 def broadcast_messages(list_of_groups, msg):
@@ -13,3 +14,8 @@ def broadcast_messages(list_of_groups, msg):
 
 
 broadcast_messages(["641792797"], "HI from bot")
+
+
+@server.route("/")
+def webhook():
+    return "!", 200
