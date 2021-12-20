@@ -1,27 +1,15 @@
-import telebot
-from decouple import config
+import os
+import requests
 
-API_KEY = config("API_KEY")
-bot = telebot.TeleBot(API_KEY)
-
-
-@bot.message_handler(commands=["HI"])
-def greet(message):
-    bot.reply_to(message, "HI, how can I help you?")
+API_KEY = os.environ["API_KEY"]
+print(API_KEY)
 
 
-def ipo_request(message):
-    req = message.text.split()
-    if len(req) < 2 or req[0].lower() not in "ipo":
-        return False
-    else:
-        return True
+def broadcast_messages(list_of_groups, msg):
+    for group in list_of_groups:
+        to_url = f"https://api.telegram.org/bot{API_KEY}/sendMessage?chat_id={group}&text={msg}&parse_mode=HTML"
+        resp = requests.get(to_url)
+        print(resp.text)
 
 
-@bot.message_handler(func=ipo_request)
-def ipo(message):
-    request = message.text.split()[1]
-    bot.send_message(message.chat.id, "HI, welcome in world of IPOs..")
-
-
-bot.polling()
+broadcast_messages(["641792797"], "HI from bot")
