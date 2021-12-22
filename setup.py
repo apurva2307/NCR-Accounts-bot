@@ -18,14 +18,14 @@ def broadcast_messages(list_of_groups, msg):
         return resp
 
 
-def parse_message(msg):
-    chat_id = msg["message"]["chat"]["id"]
-    if msg["message"]["text"]:
-        txt = msg["message"]["text"].lower()
-    elif msg["message"]["sticker"]:
-        txt = msg["message"]["sticker"]
-    first_name = msg["message"]["chat"]["first_name"]
-    username = msg["message"]["chat"]["username"]
+def parse_request(req):
+    chat_id = req["message"]["chat"]["id"]
+    if "text" in req["message"].keys():
+        txt = req["message"]["text"].lower()
+    elif "sticker" in req["message"].keys():
+        txt = req["message"]["sticker"]["file_id"]
+    first_name = req["message"]["chat"]["first_name"]
+    username = req["message"]["chat"]["username"]
     return chat_id, txt, first_name, username
 
 
@@ -104,9 +104,9 @@ def hello_appu():
 
 @app.route("/" + API_KEY, methods=["POST"])
 def getMessage():
-    msg = request.get_json()
-    if msg["message"]["text"]:
-        chat_id, txt, first_name, username = parse_message(msg)
+    req = request.get_json()
+    chat_id, txt, first_name, username = parse_request(req)
+    if "text" in req["message"].keys():
         if txt == "/start" or txt == "/subscribe":
             response = addToDatabase(chat_id, username, first_name).json()
             broadcast_messages(["44114772"], json.dumps(response))
