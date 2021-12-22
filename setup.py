@@ -20,7 +20,10 @@ def broadcast_messages(list_of_groups, msg):
 
 def parse_message(msg):
     chat_id = msg["message"]["chat"]["id"]
-    txt = msg["message"]["text"].lower()
+    if msg["message"]["text"]:
+        txt = msg["message"]["text"].lower()
+    elif msg["message"]["sticker"]:
+        txt = msg["message"]["sticker"]
     first_name = msg["message"]["chat"]["first_name"]
     username = msg["message"]["chat"]["username"]
     return chat_id, txt, first_name, username
@@ -102,18 +105,18 @@ def hello_appu():
 @app.route("/" + API_KEY, methods=["POST"])
 def getMessage():
     msg = request.get_json()
-    print(msg)
-    chat_id, txt, first_name, username = parse_message(msg)
-    if txt == "/start" or txt == "/subscribe":
-        response = addToDatabase(chat_id, username, first_name).json()
-        broadcast_messages(["44114772"], json.dumps(response))
-        broadcast_messages(["44114772"], chat_id)
-        broadcast_messages(["44114772"], username)
-        broadcast_messages([chat_id], "Thanks for subscribing my service.")
-    elif is_command(txt):
-        execute_command(txt, chat_id)
-    else:
-        broadcast_messages([chat_id], txt)
+    if msg["message"]["text"]:
+        chat_id, txt, first_name, username = parse_message(msg)
+        if txt == "/start" or txt == "/subscribe":
+            response = addToDatabase(chat_id, username, first_name).json()
+            broadcast_messages(["44114772"], json.dumps(response))
+            broadcast_messages(["44114772"], chat_id)
+            broadcast_messages(["44114772"], username)
+            broadcast_messages([chat_id], "Thanks for subscribing my service.")
+        elif is_command(txt):
+            execute_command(txt, chat_id)
+        else:
+            broadcast_messages([chat_id], txt)
     return "!", 200
 
 
