@@ -111,7 +111,7 @@ def getMessage():
             response = addToDatabase(chat_id, username, first_name).json()
             broadcast_messages(["44114772"], json.dumps(response))
             broadcast_messages(["44114772"], chat_id)
-            broadcast_messages(["44114772"], username)
+            broadcast_messages(["44114772"], f"@{username}")
             broadcast_messages([chat_id], "Thanks for subscribing my service.")
         elif is_command(txt):
             execute_command(txt, chat_id)
