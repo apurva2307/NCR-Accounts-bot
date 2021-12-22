@@ -102,6 +102,7 @@ def hello_appu():
 @app.route("/" + API_KEY, methods=["POST"])
 def getMessage():
     msg = request.get_json()
+    print(msg)
     chat_id, txt, first_name, username = parse_message(msg)
     if txt == "/start" or txt == "/subscribe":
         response = addToDatabase(chat_id, username, first_name).json()
