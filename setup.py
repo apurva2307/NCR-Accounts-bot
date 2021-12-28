@@ -1,70 +1,17 @@
-import os
+from decouple import config
 from flask import Flask, request
-import requests
-import json
-
+import requests, json
+from helpers import *
+from commands import *
+from database import addToDatabase, delete_single_user
 
 app = Flask(__name__)
-API_KEY = dict(os.environ)["API_KEY"]
+API_KEY = config("API_KEY")
 API_URL = f"https://api.telegram.org/bot{API_KEY}"
-data_url = "https://e-commerce-api-apurva.herokuapp.com/api/v1/telebot"
-
-
-def broadcast_messages(list_of_groups, msg):
-    for group in list_of_groups:
-        to_url = f"{API_URL}/sendMessage"
-        payload = {"chat_id": group, "text": msg, "parse_mode": "HTML"}
-        resp = requests.post(to_url, json=payload)
-        return resp
-
-
-def parse_request(req):
-    chat_id = req["message"]["chat"]["id"]
-    if "text" in req["message"].keys():
-        txt = req["message"]["text"].lower()
-    elif "sticker" in req["message"].keys():
-        txt = req["message"]["sticker"]["file_id"]
-    first_name = req["message"]["chat"]["first_name"]
-    username = req["message"]["chat"]["username"]
-    return chat_id, txt, first_name, username
-
-
-def broadcastToAll(msg):
-    usersURL = f"{data_url}/getAllUsers"
-    allUsers = requests.get(usersURL).json()
-    for user in allUsers["telegramUsers"]:
-        broadcast_messages([user["chat_id"]], msg)
-
-
-def addToDatabase(chat_id, username, first_name):
-    registerURL = f"{data_url}/register"
-    payload = {"chat_id": chat_id, "username": username, "first_name": first_name}
-    resp = requests.post(registerURL, json=payload)
-    return resp
-
-
-def is_command(txt):
-    return txt[0] == "/"
-
-
-def execute_command(command, chat_id):
-    if command == "/ipo":
-        broadcast_messages([chat_id], "HI, welcome in world of IPOs..")
-    elif command == "/help":
-        help_msg = "<pre>Following are the options:</pre>"
-        print(help_msg)
-        broadcast_messages([chat_id], help_msg)
-    elif command[:5] == "/all " and chat_id == 44114772:
-        help_msg = command[5:]
-        print(help_msg)
-        broadcastToAll(help_msg)
-    else:
-        broadcast_messages([chat_id], "No such command exists..")
-
 
 @app.route("/set")
 def set_webhook():
-    url = dict(os.environ)["WEB_URL"]
+    url = config("WEB_URL")
     webhook_url = f"{url}/{API_KEY}"
     setWebhook = f"{API_URL}/setWebhook"
     options = {
@@ -75,7 +22,6 @@ def set_webhook():
     requests.post(setWebhook, json=options)
     return "Webhook has been set."
 
-
 @app.route("/clear")
 def delete_webhook():
     deleteWebhook = f"{API_URL}/deleteWebhook"
@@ -83,42 +29,46 @@ def delete_webhook():
     requests.post(deleteWebhook, json=options)
     return "Webhook has been removed."
 
-
 @app.route("/get")
 def get_webhook_info():
     getWebhookInfo = f"{API_URL}/getWebhookInfo"
     resp = requests.get(getWebhookInfo)
     return json.dumps(resp.json()["result"])
 
-
 @app.route("/")
 def hello_world():
     return "Hello, World!"
 
-
-@app.route("/jenu")
-def hello_appu():
-    broadcast_messages(["641792797"], "I Love you Jenu..")
-    return "Hello Apurva"
-
-
 @app.route("/" + API_KEY, methods=["POST"])
 def getMessage():
     req = request.get_json()
+    print("req>>", req)
     chat_id, txt, first_name, username = parse_request(req)
     if "text" in req["message"].keys():
         if txt == "/start" or txt == "/subscribe":
-            response = addToDatabase(chat_id, username, first_name).json()
-            broadcast_messages(["44114772"], json.dumps(response))
-            broadcast_messages(["44114772"], chat_id)
-            broadcast_messages(["44114772"], f"@{username}")
-            broadcast_messages([chat_id], "Thanks for subscribing my service.")
+            response = addToDatabase(chat_id, username, first_name)
+            json_msg = json.loads(response)
+            if "msg" in json_msg.keys():
+                if json_msg['msg'] == f"chat_Id {chat_id} already exists for NCR_Accounts bot.":
+                    broadcast_msg(chat_id, "You have already subscribed for NCR_Accounts updates service.")
+                else : broadcast_msg("44114772",json.dumps(json_msg))
+            else: broadcast_msg(chat_id, "Thanks for subscribing for NCR_Accounts updates service.")
+            broadcast_admin(response)
+            broadcast_admin(chat_id)
+            broadcast_admin(f"@{username}")
+        elif txt == "/unsubscribe":
+            response = delete_single_user(chat_id)
+            if response == f"chat Id {chat_id} for NCR_Accounts bot is successfully deleted.":
+                broadcast_msg(chat_id, "You are successfully unsubscribed from NCR_Accounts updates service.")
+            broadcast_admin(response)
+            broadcast_admin(chat_id)
+            broadcast_admin(f"@{username}")
         elif is_command(txt):
             execute_command(txt, chat_id)
         else:
-            broadcast_messages([chat_id], txt)
+            broadcast_msg(chat_id, txt)
     return "!", 200
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+    app.run(host="0.0.0.0", port=config("PORT") if config("PORT") else 5000, debug=False)
