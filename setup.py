@@ -4,10 +4,12 @@ import requests, json
 from helpers import *
 from commands import *
 from database import addToDatabase, delete_single_user
+from dataCommands import execute_data_command
 
 app = Flask(__name__)
 API_KEY = config("API_KEY")
 API_URL = f"https://api.telegram.org/bot{API_KEY}"
+
 
 @app.route("/set")
 def set_webhook():
@@ -22,6 +24,7 @@ def set_webhook():
     requests.post(setWebhook, json=options)
     return "Webhook has been set."
 
+
 @app.route("/clear")
 def delete_webhook():
     deleteWebhook = f"{API_URL}/deleteWebhook"
@@ -29,15 +32,18 @@ def delete_webhook():
     requests.post(deleteWebhook, json=options)
     return "Webhook has been removed."
 
+
 @app.route("/get")
 def get_webhook_info():
     getWebhookInfo = f"{API_URL}/getWebhookInfo"
     resp = requests.get(getWebhookInfo)
     return json.dumps(resp.json()["result"])
 
+
 @app.route("/")
 def hello_world():
-    return "Hello, World!"
+    return "Welcome!! NCR Accounts bot."
+
 
 @app.route("/" + API_KEY, methods=["POST"])
 def getMessage():
@@ -49,24 +55,40 @@ def getMessage():
             response = addToDatabase(chat_id, username, first_name)
             json_msg = json.loads(response)
             if "msg" in json_msg.keys():
-                if json_msg['msg'] == f"chat_Id {chat_id} already exists for NCR_Accounts bot.":
-                    broadcast_msg(chat_id, "You have already subscribed for NCR_Accounts updates service.")
-                else : broadcast_msg("44114772",json.dumps(json_msg))
-            else: broadcast_msg(chat_id, "Thanks for subscribing for NCR_Accounts updates service.")
+                if (
+                    json_msg["msg"]
+                    == f"chat_Id {chat_id} already exists for NCR_Accounts bot."
+                ):
+                    broadcast_msg(
+                        chat_id,
+                        "You have already subscribed for NCR_Accounts updates service.",
+                    )
+                else:
+                    broadcast_msg("44114772", json.dumps(json_msg))
+            else:
+                broadcast_msg(
+                    chat_id, "Thanks for subscribing for NCR_Accounts updates service."
+                )
             broadcast_admin(response)
             broadcast_admin(chat_id)
             broadcast_admin(f"@{username}")
         elif txt == "/unsubscribe":
             response = delete_single_user(chat_id)
-            if response == f"chat Id {chat_id} for NCR_Accounts bot is successfully deleted.":
-                broadcast_msg(chat_id, "You are successfully unsubscribed from NCR_Accounts updates service.")
+            if (
+                response
+                == f"chat Id {chat_id} for NCR_Accounts bot is successfully deleted."
+            ):
+                broadcast_msg(
+                    chat_id,
+                    "You are successfully unsubscribed from NCR_Accounts updates service.",
+                )
             broadcast_admin(response)
             broadcast_admin(chat_id)
             broadcast_admin(f"@{username}")
         elif is_command(txt):
             execute_command(txt, chat_id)
         else:
-            broadcast_msg(chat_id, txt)
+            execute_data_command(txt, chat_id)
     return "!", 200
 
 
