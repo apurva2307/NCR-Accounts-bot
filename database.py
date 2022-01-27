@@ -49,11 +49,11 @@ def delete_single_user(chat_id):
 def get_owe_data(month):
     dataURL = f"{ncr_data_url}/getData/{month}/OWE"
     headers = {"token": config("TOKEN")}
-    monthData = requests.get(dataURL, headers=headers).json()
-    if "monthData" in monthData.keys():
-        return monthData["monthData"]
+    res = requests.get(dataURL, headers=headers).json()
+    if "monthData" in res.keys():
+        return res["monthData"]
     else:
-        return json.dumps(monthData)
+        return res
 
 
 print(get_owe_data("DEC21"))
