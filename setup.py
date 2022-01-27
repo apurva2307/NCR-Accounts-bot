@@ -48,7 +48,7 @@ def hello_world():
 @app.route("/" + API_KEY, methods=["POST"])
 def getMessage():
     req = request.get_json()
-    print("req>>", req)
+    # print("req>>", req)
     chat_id, txt, first_name, username = parse_request(req)
     if "text" in req["message"].keys():
         if txt == "/start" or txt == "/subscribe":

@@ -54,6 +54,3 @@ def get_owe_data(month):
         return res["monthData"]
     else:
         return res
-
-
-print(get_owe_data("DEC21"))
