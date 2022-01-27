@@ -18,11 +18,11 @@ def execute_data_command(command, chat_id):
         if pu in data1.keys():
             puData = data1[pu]["toEndActuals"]
             msg = ""
-            for value, index in enumerate(puData):
+            for index, value in enumerate(puData):
                 if index == 11:
                     msg += f"Total: {value} thousand\n"
                 else:
                     msg += f"D{index+3}: {value} thousand\n"
             broadcast_msg(chat_id, msg)
     else:
-        broadcast_msg(chat_id, "No such data command exists..")
+        broadcast_msg(chat_id, "No such command exists..")
