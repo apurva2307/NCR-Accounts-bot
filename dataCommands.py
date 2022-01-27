@@ -19,7 +19,7 @@ def execute_data_command(command, chat_id):
             msg = ""
             for index, value in enumerate(puData1):
                 if index == 0:
-                    msg += f"Staff Cost >\nD{index+3}: {value} thousand\n"
+                    msg += f"Staff Cost >>\nD{index+3}: {value} thousand\n"
                 elif index == 11:
                     msg += f"Total: {value} thousand\n"
                     broadcast_msg(chat_id, msg)
@@ -28,7 +28,7 @@ def execute_data_command(command, chat_id):
                     msg += f"D{index+3}: {value} thousand\n"
             for index, value in enumerate(puData2):
                 if index == 0:
-                    msg += f"Non-Staff Cost >\nD{index+3}: {value} thousand\n"
+                    msg += f"Non-Staff Cost >>\nD{index+3}: {value} thousand\n"
                 elif index == 11:
                     msg += f"Total: {value} thousand\n"
                     broadcast_msg(chat_id, msg)
@@ -37,7 +37,7 @@ def execute_data_command(command, chat_id):
                     msg += f"D{index+3}: {value} thousand\n"
             for index, value in enumerate(puData3):
                 if index == 0:
-                    msg += f"Net Total >\nD{index+3}: {value} thousand\n"
+                    msg += f"Net Total >>\nD{index+3}: {value} thousand\n"
                 elif index == 11:
                     msg += f"Total: {value} thousand\n"
                     broadcast_msg(chat_id, msg)
@@ -68,7 +68,7 @@ def execute_data_command(command, chat_id):
                     msg = ""
                     for index, value in enumerate(puData1):
                         if index == 0:
-                            msg += f"Variation AC over BP absolute>\nD{index+3}: {value} thousand\n"
+                            msg += f"Variation AC over BP absolute >>\nD{index+3}: {value} thousand\n"
                         elif index == 11:
                             msg += f"Total: {value} thousand\n"
                             broadcast_msg(chat_id, msg)
@@ -77,9 +77,7 @@ def execute_data_command(command, chat_id):
                             msg += f"D{index+3}: {value} thousand\n"
                     for index, value in enumerate(puData2):
                         if index == 0:
-                            msg += (
-                                f"Variation AC over BP percent>\nD{index+3}: {value}%\n"
-                            )
+                            msg += f"Variation AC over BP percent >>\nD{index+3}: {value}%\n"
                         elif index == 11:
                             msg += f"Total: {value}%\n"
                             broadcast_msg(chat_id, msg)
@@ -88,7 +86,7 @@ def execute_data_command(command, chat_id):
                             msg += f"D{index+3}: {value}%\n"
                     for index, value in enumerate(puData3):
                         if index == 0:
-                            msg += f"Variation AC over COPPY absolute>\nD{index+3}: {value} thousand\n"
+                            msg += f"Variation AC over COPPY absolute >>\nD{index+3}: {value} thousand\n"
                         elif index == 11:
                             msg += f"Total: {value} thousand\n"
                             broadcast_msg(chat_id, msg)
@@ -97,7 +95,7 @@ def execute_data_command(command, chat_id):
                             msg += f"D{index+3}: {value} thousand\n"
                     for index, value in enumerate(puData4):
                         if index == 0:
-                            msg += f"Variation AC over COPPY percent>\nD{index+3}: {value}%\n"
+                            msg += f"Variation AC over COPPY percent >>\nD{index+3}: {value}%\n"
                         elif index == 11:
                             msg += f"Total: {value}%\n"
                             broadcast_msg(chat_id, msg)

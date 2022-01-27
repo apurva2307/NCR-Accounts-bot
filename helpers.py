@@ -67,7 +67,10 @@ def parse_request(req):
     elif "photo" in req["message"].keys():
         txt = req["message"]["photo"][0]["file_id"]
     first_name = req["message"]["chat"]["first_name"]
-    username = req["message"]["chat"]["username"]
+    if "username" in req["message"]["chat"].keys():
+        username = req["message"]["chat"]["username"]
+    else:
+        username = "Not provided"
     return chat_id, txt, first_name, username
 
 

@@ -66,7 +66,7 @@ def execute_command(command, chat_id):
     elif command == "/help":
         help_msg = "Following are the options:\n"
         item1 = "1. /pending add item_description - to add an item to pending list\n2. /pending del item_number - to delete an item from pending list\n"
-        item2 = "3. owe dec21 - to get owe actuals figures for a particular month\n4. owe dec21 pu26 - to get owe actuals figures for a particular month for given PU\n5. owe dec21 pu26 var - to get diffrent variations summary for a particular month for given PU\n"
+        item2 = "3. owe dec21 - to get owe actuals figures for a particular month\n4. owe dec21 pu26 - to get owe actuals figures for a particular month for given PU\n5. owe dec21 pu26 var - to get different variations summary for a particular month for given PU\n"
         help_msg += item1 + item2
         broadcast_msg(chat_id, help_msg)
     elif command[:5] == "/all " and chat_id == 44114772 and command[5:8] == "img":
