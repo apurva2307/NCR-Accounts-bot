@@ -13,10 +13,9 @@ def execute_data_command(command, chat_id):
             return
         data1 = data["data1"]
         if len(cmd) == 2:
-            pu = cmd[1]
-            puData1 = data1[pu]["Staff Cost"]
-            puData2 = data1[pu]["Non-Staff Cost"]
-            puData3 = data1[pu]["Net"]
+            puData1 = data1["Staff Cost"]["toEndActuals"]
+            puData2 = data1["Non-Staff Cost"]["toEndActuals"]
+            puData3 = data1["Net"]["toEndActuals"]
             msg = ""
             for index, value in enumerate(puData1):
                 if index == 0:
