@@ -7,7 +7,13 @@ def execute_data_command(command, chat_id):
 
     if command[0:4] == "owe ":
         cmd = command.upper().split(" ")
+        if len(cmd[1]) > 5:
+            broadcast_msg(chat_id, "Invalid input provided.")
+            return
         data = get_owe_data(cmd[1])
+        if not data:
+            broadcast_msg(chat_id, "No data is available for given input.")
+            return
         if "msg" in data.keys():
             broadcast_msg(chat_id, "Invalid input provided.")
             return
