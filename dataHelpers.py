@@ -4,7 +4,7 @@ from helpers import *
 
 def get_data_type_two(title, puData1, puData2, percent):
     showPercent = "%" if percent else ""
-    msg = f"{title}\n <b>Fig. in thousand</b>"
+    msg = f"{title}  <b>Fig. in thousand</b>\n"
     for index, value in enumerate(puData1):
         if index == 11:
             msg += f"Total: {value} ({puData2[index]}{showPercent})\n"
