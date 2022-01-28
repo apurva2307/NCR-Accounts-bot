@@ -71,11 +71,11 @@ def extractData(filePath):
     return total
 
 
-def addToDatabase():
+def addToDatabase(month):
     registerURL = "https://e-commerce-api-apurva.herokuapp.com/api/v1/telebot/NCRAccountsBot/postData"
-    data1 = extractData("../files/OWE-DEC21.xlsx")
+    data1 = extractData(f"../files/OWE-{month.upper()}.xlsx")
     payload = {
-        "month": "DEC21",
+        "month": f"{month.upper()}",
         "type": "OWE",
         "data1": data1,
     }
@@ -83,4 +83,6 @@ def addToDatabase():
     return resp.json()
 
 
-print(addToDatabase())
+months = ["APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT"]
+for month in months:
+    addToDatabase(f"{month}21")
