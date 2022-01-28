@@ -86,3 +86,4 @@ def addToDatabase(month):
 months = ["APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT"]
 for month in months:
     addToDatabase(f"{month}21")
+print("done")

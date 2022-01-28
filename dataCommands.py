@@ -1,5 +1,6 @@
 from database import get_owe_data
 from helpers import *
+from dataHelpers import get_data_type_two
 
 
 def execute_data_command(command, chat_id):
@@ -25,37 +26,49 @@ def execute_data_command(command, chat_id):
             puData2Util = data1["Non-Staff Cost"]["budgetUtilization"]
             puData3 = data1["Net"]["toEndActuals"]
             puData3Util = data1["Net"]["budgetUtilization"]
-            msg = ""
-            for index, value in enumerate(puData1):
-                if index == 0:
-                    msg += f"Staff Cost Actuals (Budget Util.) >>\nD{index+3}: {value} thousand ({puData1Util[index]}%)\n"
-                elif index == 11:
-                    msg += f"Total: {value} thousand ({puData1Util[index]}%)\n"
-                    broadcast_msg(chat_id, msg)
-                    msg = ""
-                else:
-                    msg += f"D{index+3}: {value} thousand ({puData1Util[index]}%)\n"
-            for index, value in enumerate(puData2):
-                if index == 0:
-                    msg += f"Non-Staff Cost Actuals (Budget Util.) >>\nD{index+3}: {value} thousand ({puData2Util[index]}%)\n"
-                elif index == 11:
-                    msg += f"Total: {value} thousand ({puData2Util[index]}%)\n"
-                    broadcast_msg(chat_id, msg)
-                    msg = ""
-                else:
-                    msg += f"D{index+3}: {value} thousand ({puData2Util[index]}%)\n"
-            for index, value in enumerate(puData3):
-                if index == 0:
-                    msg += f"Net Total Actuals (Budget Util.) >>\nD{index+3}: {value} thousand ({puData3Util[index]}%)\n"
-                elif index == 11:
-                    msg += f"Total: {value} thousand ({puData3Util[index]}%)\n"
-                    broadcast_msg(chat_id, msg)
-                    msg = ""
-                else:
-                    msg += f"D{index+3}: {value} thousand ({puData3Util[index]}%)\n"
+            message = get_data_type_two(
+                "Staff Cost Actuals (Budget Util.) >>", puData1, puData1Util, True
+            )
+            broadcast_msg(chat_id, message)
+            message = get_data_type_two(
+                "Non-Staff Cost Actuals (Budget Util.) >>", puData2, puData2Util, True
+            )
+            broadcast_msg(chat_id, message)
+            message = get_data_type_two(
+                "Net Total Actuals (Budget Util.) >>", puData3, puData3Util, True
+            )
+            broadcast_msg(chat_id, message)
+
+            # for index, value in enumerate(puData1):
+            #     if index == 0:
+            #         msg += f"Staff Cost Actuals (Budget Util.) >>\nD{index+3}: {value} thousand ({puData1Util[index]}%)\n"
+            #     elif index == 11:
+            #         msg += f"Total: {value} thousand ({puData1Util[index]}%)\n"
+            #         broadcast_msg(chat_id, msg)
+            #         msg = ""
+            #     else:
+            #         msg += f"D{index+3}: {value} thousand ({puData1Util[index]}%)\n"
+            # for index, value in enumerate(puData2):
+            #     if index == 0:
+            #         msg += f"Non-Staff Cost Actuals (Budget Util.) >>\nD{index+3}: {value} thousand ({puData2Util[index]}%)\n"
+            #     elif index == 11:
+            #         msg += f"Total: {value} thousand ({puData2Util[index]}%)\n"
+            #         broadcast_msg(chat_id, msg)
+            #         msg = ""
+            #     else:
+            #         msg += f"D{index+3}: {value} thousand ({puData2Util[index]}%)\n"
+            # for index, value in enumerate(puData3):
+            #     if index == 0:
+            #         msg += f"Net Total Actuals (Budget Util.) >>\nD{index+3}: {value} thousand ({puData3Util[index]}%)\n"
+            #     elif index == 11:
+            #         msg += f"Total: {value} thousand ({puData3Util[index]}%)\n"
+            #         broadcast_msg(chat_id, msg)
+            #         msg = ""
+            #     else:
+            #         msg += f"D{index+3}: {value} thousand ({puData3Util[index]}%)\n"
         if len(cmd) >= 3:
             pu = cmd[2]
-            if pu not in data1.keys():
+            if pu[:2] == "PU" and pu not in data1.keys():
                 broadcast_msg(chat_id, "Invalid input provided.")
                 return
             if len(cmd) == 3:
