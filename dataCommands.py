@@ -5,7 +5,7 @@ from dataHelpers import get_data_type_two
 
 def execute_data_command(command, chat_id):
     command = command.lower()
-
+    options = ["BUD", "BP", "COPPY", "VAR", "VARBP", "VARCOPPY", "BUDUTIL"]
     if command[0:4] == "owe ":
         cmd = command.upper().split(" ")
         if len(cmd[1]) > 5:
@@ -39,36 +39,12 @@ def execute_data_command(command, chat_id):
             )
             broadcast_msg(chat_id, message)
 
-            # for index, value in enumerate(puData1):
-            #     if index == 0:
-            #         msg += f"Staff Cost Actuals (Budget Util.) >>\nD{index+3}: {value} thousand ({puData1Util[index]}%)\n"
-            #     elif index == 11:
-            #         msg += f"Total: {value} thousand ({puData1Util[index]}%)\n"
-            #         broadcast_msg(chat_id, msg)
-            #         msg = ""
-            #     else:
-            #         msg += f"D{index+3}: {value} thousand ({puData1Util[index]}%)\n"
-            # for index, value in enumerate(puData2):
-            #     if index == 0:
-            #         msg += f"Non-Staff Cost Actuals (Budget Util.) >>\nD{index+3}: {value} thousand ({puData2Util[index]}%)\n"
-            #     elif index == 11:
-            #         msg += f"Total: {value} thousand ({puData2Util[index]}%)\n"
-            #         broadcast_msg(chat_id, msg)
-            #         msg = ""
-            #     else:
-            #         msg += f"D{index+3}: {value} thousand ({puData2Util[index]}%)\n"
-            # for index, value in enumerate(puData3):
-            #     if index == 0:
-            #         msg += f"Net Total Actuals (Budget Util.) >>\nD{index+3}: {value} thousand ({puData3Util[index]}%)\n"
-            #     elif index == 11:
-            #         msg += f"Total: {value} thousand ({puData3Util[index]}%)\n"
-            #         broadcast_msg(chat_id, msg)
-            #         msg = ""
-            #     else:
-            #         msg += f"D{index+3}: {value} thousand ({puData3Util[index]}%)\n"
         if len(cmd) >= 3:
             pu = cmd[2]
             if pu[:2] == "PU" and pu not in data1.keys():
+                broadcast_msg(chat_id, "Invalid input provided.")
+                return
+            if pu not in options:
                 broadcast_msg(chat_id, "Invalid input provided.")
                 return
             if len(cmd) == 3:
