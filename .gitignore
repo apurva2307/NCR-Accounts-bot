@@ -1,5 +1,5 @@
 .env
 google-drive/
-dataExtraction
+dataExtraction/
 __pycache__
 files
