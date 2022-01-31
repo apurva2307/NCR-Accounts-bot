@@ -20,12 +20,12 @@ def execute_data_command(command, chat_id):
             return
         data1 = data["data1"]
         if len(cmd) == 2:
-            puData1 = data1["Staff Cost"]["toEndActuals"]
-            puData1Util = data1["Staff Cost"]["budgetUtilization"]
-            puData2 = data1["Non-Staff Cost"]["toEndActuals"]
-            puData2Util = data1["Non-Staff Cost"]["budgetUtilization"]
-            puData3 = data1["Net"]["toEndActuals"]
-            puData3Util = data1["Net"]["budgetUtilization"]
+            puData1 = data1["STAFF"]["toEndActuals"]
+            puData1Util = data1["STAFF"]["budgetUtilization"]
+            puData2 = data1["NONSTAFF"]["toEndActuals"]
+            puData2Util = data1["NONSTAFF"]["budgetUtilization"]
+            puData3 = data1["NET"]["toEndActuals"]
+            puData3Util = data1["NET"]["budgetUtilization"]
             message = get_data_type_two(
                 "Staff Cost Actuals (Budget Util.) >>", puData1, puData1Util, True
             )
@@ -53,15 +53,15 @@ def execute_data_command(command, chat_id):
                     )
                     broadcast_msg(chat_id, message)
                 if pu == "BUD":
-                    puData = data1["Net"]["budget"]
-                    puDataUtil = data1["Net"]["budgetUtilization"]
+                    puData = data1["NET"]["budget"]
+                    puDataUtil = data1["NET"]["budgetUtilization"]
                     message = get_data_type_two(
                         "Net Budget (Budget Util.) >>", puData, puDataUtil, True
                     )
                     broadcast_msg(chat_id, message)
                 if pu == "BP":
-                    puData = data1["Net"]["toEndBp"]
-                    puDataUtil = data1["Net"]["varAcBpPercent"]
+                    puData = data1["NET"]["toEndBp"]
+                    puDataUtil = data1["NET"]["varAcBpPercent"]
                     message = get_data_type_two(
                         "Net BP (Var. BP in %) >>", puData, puDataUtil, True
                     )
@@ -72,43 +72,57 @@ def execute_data_command(command, chat_id):
                     puData2 = data1[pu]["varAcBpPercent"]
                     puData3 = data1[pu]["varAcCoppy"]
                     puData4 = data1[pu]["varAcCoppyPercent"]
-                    msg = ""
-                    for index, value in enumerate(puData1):
-                        if index == 0:
-                            msg += f"Variation AC over BP absolute >>\nD{index+3}: {value} thousand\n"
-                        elif index == 11:
-                            msg += f"Total: {value} thousand\n"
-                            broadcast_msg(chat_id, msg)
-                            msg = ""
-                        else:
-                            msg += f"D{index+3}: {value} thousand\n"
-                    for index, value in enumerate(puData2):
-                        if index == 0:
-                            msg += f"Variation AC over BP percent >>\nD{index+3}: {value}%\n"
-                        elif index == 11:
-                            msg += f"Total: {value}%\n"
-                            broadcast_msg(chat_id, msg)
-                            msg = ""
-                        else:
-                            msg += f"D{index+3}: {value}%\n"
-                    for index, value in enumerate(puData3):
-                        if index == 0:
-                            msg += f"Variation AC over COPPY absolute >>\nD{index+3}: {value} thousand\n"
-                        elif index == 11:
-                            msg += f"Total: {value} thousand\n"
-                            broadcast_msg(chat_id, msg)
-                            msg = ""
-                        else:
-                            msg += f"D{index+3}: {value} thousand\n"
-                    for index, value in enumerate(puData4):
-                        if index == 0:
-                            msg += f"Variation AC over COPPY percent >>\nD{index+3}: {value}%\n"
-                        elif index == 11:
-                            msg += f"Total: {value}%\n"
-                            broadcast_msg(chat_id, msg)
-                            msg = ""
-                        else:
-                            msg += f"D{index+3}: {value}%\n"
+                    message = get_data_type_two(
+                        "Variation AC over BP absolute (Percentage) >>",
+                        puData1,
+                        puData2,
+                        True,
+                    )
+                    broadcast_msg(chat_id, message)
+                    message = get_data_type_two(
+                        "Variation AC over COPPY absolute (Percentage) >>",
+                        puData3,
+                        puData4,
+                        True,
+                    )
+                    broadcast_msg(chat_id, message)
+                    # msg = ""
+                    # for index, value in enumerate(puData1):
+                    #     if index == 0:
+                    #         msg += f"Variation AC over BP absolute >>\nD{index+3}: {value} thousand\n"
+                    #     elif index == 11:
+                    #         msg += f"Total: {value} thousand\n"
+                    #         broadcast_msg(chat_id, msg)
+                    #         msg = ""
+                    #     else:
+                    #         msg += f"D{index+3}: {value} thousand\n"
+                    # for index, value in enumerate(puData2):
+                    #     if index == 0:
+                    #         msg += f"Variation AC over BP percent >>\nD{index+3}: {value}%\n"
+                    #     elif index == 11:
+                    #         msg += f"Total: {value}%\n"
+                    #         broadcast_msg(chat_id, msg)
+                    #         msg = ""
+                    #     else:
+                    #         msg += f"D{index+3}: {value}%\n"
+                    # for index, value in enumerate(puData3):
+                    #     if index == 0:
+                    #         msg += f"Variation AC over COPPY absolute >>\nD{index+3}: {value} thousand\n"
+                    #     elif index == 11:
+                    #         msg += f"Total: {value} thousand\n"
+                    #         broadcast_msg(chat_id, msg)
+                    #         msg = ""
+                    #     else:
+                    #         msg += f"D{index+3}: {value} thousand\n"
+                    # for index, value in enumerate(puData4):
+                    #     if index == 0:
+                    #         msg += f"Variation AC over COPPY percent >>\nD{index+3}: {value}%\n"
+                    #     elif index == 11:
+                    #         msg += f"Total: {value}%\n"
+                    #         broadcast_msg(chat_id, msg)
+                    #         msg = ""
+                    #     else:
+                    #         msg += f"D{index+3}: {value}%\n"
 
     else:
         broadcast_msg(chat_id, "No such command exists..")

@@ -83,7 +83,20 @@ def addToDatabase(month):
     return resp.json()
 
 
-months = ["APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT"]
+def updateToDatabase(month):
+    registerURL = "https://e-commerce-api-apurva.herokuapp.com/api/v1/telebot/NCRAccountsBot/updateData"
+    data1 = extractData(f"../files/OWE-{month.upper()}.xlsx")
+    headers = {"token": "Zr4u7x!A%C*F-JaNdRgUkXp2s5v8y/B?"}
+    payload = {
+        "month": f"{month.upper()}",
+        "type": "OWE",
+        "data1": data1,
+    }
+    resp = requests.post(registerURL, json=payload, headers=headers)
+    return resp.json()
+
+
+months = ["APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
 for month in months:
-    addToDatabase(f"{month}21")
+    updateToDatabase(f"{month}21")
 print("done")
