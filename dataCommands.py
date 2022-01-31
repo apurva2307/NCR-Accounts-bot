@@ -48,9 +48,11 @@ def execute_data_command(command, chat_id):
                 if pu in data1.keys():
                     puData = data1[pu]["toEndActuals"]
                     puDataUtil = data1[pu]["budgetUtilization"]
-                    message = get_data_type_two(
-                        "Net Total Actuals (Budget Util.) >>", puData, puDataUtil, True
-                    )
+                    otheroptions = ["CREDIT", "STAFF", "NONSTAFF", "GROSS", "NET"]
+                    title = f"Actuals for {pu} (Budget Util.) >>"
+                    if pu in otheroptions:
+                        title = f"{pu} Total Actuals (Budget Util.) >>"
+                    message = get_data_type_two(title, puData, puDataUtil, True)
                     broadcast_msg(chat_id, message)
                 if pu == "BUD":
                     puData = data1["NET"]["budget"]
