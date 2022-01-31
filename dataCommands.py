@@ -47,13 +47,11 @@ def execute_data_command(command, chat_id):
             if len(cmd) == 3:
                 if pu in data1.keys():
                     puData = data1[pu]["toEndActuals"]
-                    msg = ""
-                    for index, value in enumerate(puData):
-                        if index == 11:
-                            msg += f"Total: {value} thousand\n"
-                        else:
-                            msg += f"D{index+3}: {value} thousand\n"
-                    broadcast_msg(chat_id, msg)
+                    puDataUtil = data1[pu]["budgetUtilization"]
+                    message = get_data_type_two(
+                        "Net Total Actuals (Budget Util.) >>", puData, puDataUtil, True
+                    )
+                    broadcast_msg(chat_id, message)
                 if pu == "BUD":
                     puData = data1["Net"]["budget"]
                     puDataUtil = data1["Net"]["budgetUtilization"]
