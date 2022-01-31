@@ -41,10 +41,7 @@ def execute_data_command(command, chat_id):
 
         if len(cmd) >= 3:
             pu = cmd[2]
-            if pu[:2] == "PU" and pu not in data1.keys():
-                broadcast_msg(chat_id, "Invalid input provided.")
-                return
-            if pu not in options:
+            if pu not in data1.keys() and pu not in options:
                 broadcast_msg(chat_id, "Invalid input provided.")
                 return
             if len(cmd) == 3:
@@ -57,6 +54,20 @@ def execute_data_command(command, chat_id):
                         else:
                             msg += f"D{index+3}: {value} thousand\n"
                     broadcast_msg(chat_id, msg)
+                if pu == "BUD":
+                    puData = data1["Net"]["budget"]
+                    puDataUtil = data1["Net"]["budgetUtilization"]
+                    message = get_data_type_two(
+                        "Net Budget (Budget Util.) >>", puData, puDataUtil, True
+                    )
+                    broadcast_msg(chat_id, message)
+                if pu == "BP":
+                    puData = data1["Net"]["toEndBp"]
+                    puDataUtil = data1["Net"]["varAcBpPercent"]
+                    message = get_data_type_two(
+                        "Net BP (Var. BP in %) >>", puData, puDataUtil, True
+                    )
+                    broadcast_msg(chat_id, message)
             if len(cmd) == 4:
                 if cmd[3] == "VAR":
                     puData1 = data1[pu]["varAcBp"]
