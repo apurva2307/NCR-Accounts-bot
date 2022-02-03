@@ -6,7 +6,7 @@ def execute_capex_command(data1, cmd, chat_id):
         totalData = data1["TOTAL"]
         msg = ""
         for key, value in totalData:
-            actuals = value["ncr"][-2]
-            budUtil = value["ncr"][-1]
+            actuals = value["NCR"][-2]
+            budUtil = value["NCR"][-1]
             msg = f"for {key}\nactuals = {actuals}, util = {budUtil}"
         broadcast_msg(chat_id, msg)
