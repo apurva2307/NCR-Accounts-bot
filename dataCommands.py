@@ -1,14 +1,15 @@
-from database import get_owe_data
+from database import get_owe_data, get_capex_data
 from helpers import *
 from dataHelpers import get_data_type_two
+from capexCommands import execute_capex_command
 
 
 def execute_data_command(command, chat_id):
-    command = command.lower()
+    command = command.upper()
     options = ["BUD", "BP", "COPPY", "VAR", "VARBP", "VARCOPPY", "BUDUTIL"]
-    if command[0:4] == "owe ":
-        cmd = command.upper().split(" ")
-        if len(cmd[1]) > 5:
+    if command[0:4] == "OWE ":
+        cmd = command.split(" ")
+        if len(cmd[1]) > 5 or len(cmd[1]) < 5:
             broadcast_msg(chat_id, "Invalid input provided.")
             return
         data = get_owe_data(cmd[1])
@@ -88,43 +89,19 @@ def execute_data_command(command, chat_id):
                         True,
                     )
                     broadcast_msg(chat_id, message)
-                    # msg = ""
-                    # for index, value in enumerate(puData1):
-                    #     if index == 0:
-                    #         msg += f"Variation AC over BP absolute >>\nD{index+3}: {value} thousand\n"
-                    #     elif index == 11:
-                    #         msg += f"Total: {value} thousand\n"
-                    #         broadcast_msg(chat_id, msg)
-                    #         msg = ""
-                    #     else:
-                    #         msg += f"D{index+3}: {value} thousand\n"
-                    # for index, value in enumerate(puData2):
-                    #     if index == 0:
-                    #         msg += f"Variation AC over BP percent >>\nD{index+3}: {value}%\n"
-                    #     elif index == 11:
-                    #         msg += f"Total: {value}%\n"
-                    #         broadcast_msg(chat_id, msg)
-                    #         msg = ""
-                    #     else:
-                    #         msg += f"D{index+3}: {value}%\n"
-                    # for index, value in enumerate(puData3):
-                    #     if index == 0:
-                    #         msg += f"Variation AC over COPPY absolute >>\nD{index+3}: {value} thousand\n"
-                    #     elif index == 11:
-                    #         msg += f"Total: {value} thousand\n"
-                    #         broadcast_msg(chat_id, msg)
-                    #         msg = ""
-                    #     else:
-                    #         msg += f"D{index+3}: {value} thousand\n"
-                    # for index, value in enumerate(puData4):
-                    #     if index == 0:
-                    #         msg += f"Variation AC over COPPY percent >>\nD{index+3}: {value}%\n"
-                    #     elif index == 11:
-                    #         msg += f"Total: {value}%\n"
-                    #         broadcast_msg(chat_id, msg)
-                    #         msg = ""
-                    #     else:
-                    #         msg += f"D{index+3}: {value}%\n"
-
+    if command[0:6] == "CAPEX ":
+        cmd = command.split(" ")
+        if len(cmd[1]) > 5 or len(cmd[1]) < 5:
+            broadcast_msg(chat_id, "Invalid input provided.")
+            return
+        data = get_capex_data(cmd[1])
+        if not data:
+            broadcast_msg(chat_id, "No data is available for given input.")
+            return
+        if "msg" in data.keys():
+            broadcast_msg(chat_id, "Invalid input provided.")
+            return
+        data1 = data["data1"]
+        execute_capex_command(data1, cmd, chat_id)
     else:
         broadcast_msg(chat_id, "No such command exists..")

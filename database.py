@@ -54,3 +54,13 @@ def get_owe_data(month):
         return res["monthData"]
     else:
         return res
+
+
+def get_capex_data(month):
+    dataURL = f"{ncr_data_url}/getData/{month}/CAPEX"
+    headers = {"token": config("TOKEN")}
+    res = requests.get(dataURL, headers=headers).json()
+    if "monthData" in res.keys():
+        return res["monthData"]
+    else:
+        return res
