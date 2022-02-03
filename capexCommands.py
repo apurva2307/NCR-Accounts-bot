@@ -37,7 +37,8 @@ def execute_capex_command(data1, cmd, chat_id):
                         continue
                     else:
                         if cmd[2] in data1[key].keys():
-                            msg += f"{key}: {data1[key][cmd[2]][-2]} ({data1[key][cmd[2]][-1]}%)"
+                            msg += f"{key}: {data1[key][cmd[2]]['NCR'][-2]} ({data1[key][cmd[2]]['NCR'][-1]}%)\n"
+                # return msg
                 broadcast_msg(chat_id, msg)
         elif len(cmd) == 4:
             totalData = data1[cmd[2]]
@@ -69,5 +70,5 @@ if __name__ == "__main__":
     from capexData import getCapexData
 
     data1 = getCapexData()["monthData"]["data1"]
-    res = execute_capex_command(data1, ["CAPEX", "DEC21", "PH333"], "567567")
+    res = execute_capex_command(data1, ["CAPEX", "DEC21", "DRF"], "567567")
     print(res)
