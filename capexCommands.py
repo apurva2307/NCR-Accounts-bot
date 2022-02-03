@@ -5,11 +5,14 @@ from puPhList import getPHs
 def execute_capex_command(data1, cmd, chat_id):
     if len(cmd) == 2:
         totalData = data1["TOTAL"]
-        msg = "Source of fund wise upto month actuals (Budget Utilization)>\n <b><i>Figures in Thousand</i></b>\n"
+        msg = "Source of fund wise upto month actuals Total (Budget Utilization)>\n <b><i>Figures in Thousand</i></b>\n"
         for key, value in totalData.items():
             actuals = value["NCR"][-2]
             budUtil = value["NCR"][-1]
-            msg += f"Fund- {key}: {actuals} ({budUtil}%)\n"
+            msg += f"{key}: {actuals} ({budUtil}%)\n"
+        gTotal = data1["G-TOTAL"]["NCR"][-2]
+        gTotalUtil = data1["G-TOTAL"]["NCR"][-1]
+        msg += f"\nGrand Total: {gTotal} ({gTotalUtil}%)"
         # return msg
         broadcast_msg(chat_id, msg)
     elif len(cmd) > 2:
@@ -23,10 +26,7 @@ def execute_capex_command(data1, cmd, chat_id):
             for key, value in totalData.items():
                 actuals = value["NCR"][-2]
                 budUtil = value["NCR"][-1]
-                if key == "TOTAL":
-                    msg += f"{key}: {actuals} ({budUtil}%)\n"
-                else:
-                    msg += f"Fund- {key}: {actuals} ({budUtil}%)\n"
+                msg += f"{key}: {actuals} ({budUtil}%)\n"
             # return msg
             broadcast_msg(chat_id, msg)
             return
