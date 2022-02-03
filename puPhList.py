@@ -88,6 +88,7 @@ def getPHs():
         "TOTAL",
         "EBR-IF",
         "EBR-P",
+        "G-TOTAL",
     ]
 
 
