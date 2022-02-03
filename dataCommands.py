@@ -89,7 +89,7 @@ def execute_data_command(command, chat_id):
                         True,
                     )
                     broadcast_msg(chat_id, message)
-    if command[0:6] == "CAPEX ":
+    elif command[0:6] == "CAPEX ":
         cmd = command.split(" ")
         if len(cmd[1]) > 5 or len(cmd[1]) < 5:
             broadcast_msg(chat_id, "Invalid input provided.")
