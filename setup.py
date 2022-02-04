@@ -1,6 +1,7 @@
 from decouple import config
 from flask import Flask, request
 import requests, json
+from datetime import time
 from helpers import *
 from commands import *
 from database import addToDatabase, delete_single_user
@@ -30,6 +31,16 @@ def delete_webhook():
     deleteWebhook = f"{API_URL}/deleteWebhook"
     options = {"drop_pending_updates": True}
     requests.post(deleteWebhook, json=options)
+    return "Webhook has been removed."
+
+
+@app.route("/trial")
+def auto_msg():
+    num = 0
+    while num < 10:
+        broadcast_admin("HI")
+        num += 1
+        time.sleep(5)
     return "Webhook has been removed."
 
 
