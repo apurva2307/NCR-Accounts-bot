@@ -93,4 +93,4 @@ def getMessage():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=config("PORT") if config("PORT") else 5000, debug=True)
+    app.run(host="0.0.0.0", port=config("PORT") if config("PORT") else 5000)
