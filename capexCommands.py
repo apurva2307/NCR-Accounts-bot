@@ -10,14 +10,24 @@ def execute_capex_command(data1, cmd, chat_id):
             actuals = value["NCR"][-2]
             budUtil = value["NCR"][-1]
             msg += f"{key}: {actuals} ({budUtil}%)\n"
+        ebrIfTotal = data1["EBR-IF"]["TOTAL"]["NCR"][-2]
+        ebrIfTotalUtil = data1["EBR-IF"]["TOTAL"]["NCR"][-2]
+        ebrPTotal = data1["EBR-P"]["TOTAL"]["NCR"][-2]
+        ebrPTotalUtil = data1["EBR-P"]["TOTAL"]["NCR"][-1]
         gTotal = data1["G-TOTAL"]["NCR"][-2]
         gTotalUtil = data1["G-TOTAL"]["NCR"][-1]
+        msg += f"\nEBR-IF: {ebrIfTotal} ({ebrIfTotalUtil}%)"
+        msg += f"\nEBR-P: {ebrPTotal} ({ebrPTotalUtil}%)"
         msg += f"\nGrand Total: {gTotal} ({gTotalUtil}%)"
         # return msg
         broadcast_msg(chat_id, msg)
     elif len(cmd) > 2:
         phList = getPHs()
-        if cmd[2] not in phList and cmd[2] not in data1["TOTAL"].keys():
+        if (
+            cmd[2] not in phList
+            and cmd[2] not in data1["TOTAL"].keys()
+            and cmd[2] != "BUDGET"
+        ):
             broadcast_msg(chat_id, "Invalid input provided.")
             return
         if len(cmd) == 3:
@@ -28,6 +38,20 @@ def execute_capex_command(data1, cmd, chat_id):
                     actuals = value["NCR"][-2]
                     budUtil = value["NCR"][-1]
                     msg += f"{key}: {actuals} ({budUtil}%)\n"
+                # return msg
+                broadcast_msg(chat_id, msg)
+            elif cmd[2] == "BUDGET":
+                totalData = data1["TOTAL"]
+                msg = f"Source of fund wise total Budget Grant>\n <b><i>Figures in Thousand</i></b>\n"
+                for key, value in totalData.items():
+                    budGrant = value["NCR"][0]
+                    msg += f"{key}: {budGrant}\n"
+                ebrIfBud = data1["EBR-IF"]["TOTAL"]["NCR"][0]
+                ebrPBud = data1["EBR-P"]["TOTAL"]["NCR"][0]
+                gTotalBud = data1["G-TOTAL"]["NCR"][0]
+                msg += f"EBR-IF: {ebrIfBud}\n"
+                msg += f"EBR-P: {ebrPBud}\n"
+                msg += f"G-TOTAL: {gTotalBud}\n"
                 # return msg
                 broadcast_msg(chat_id, msg)
             else:
@@ -70,5 +94,5 @@ if __name__ == "__main__":
     from capexData import getCapexData
 
     data1 = getCapexData()["monthData"]["data1"]
-    res = execute_capex_command(data1, ["CAPEX", "DEC21", "DRF"], "567567")
+    res = execute_capex_command(data1, ["CAPEX", "DEC21", "BUDGET"], "567567")
     print(res)
