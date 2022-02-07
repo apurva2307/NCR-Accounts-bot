@@ -34,14 +34,14 @@ def delete_webhook():
     return "Webhook has been removed."
 
 
-@app.route("/trial")
+@app.route("/trial", methods=["POST"])
 def auto_msg():
-    num = 0
-    while num < 10:
-        broadcast_admin("HI")
-        num += 1
-        time.sleep(5)
-    return "Webhook has been removed."
+    req = request.get_json()
+    print("trial>>", req)
+    print("header>>", request.headers["token"])
+    msg = req["msg"]
+    broadcast_admin(msg)
+    return "Reminder invoked."
 
 
 @app.route("/get")
@@ -104,4 +104,4 @@ def getMessage():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=config("PORT") if config("PORT") else 5000)
+    app.run(host="0.0.0.0", port=config("PORT") if config("PORT") else 5000, debug=True)
