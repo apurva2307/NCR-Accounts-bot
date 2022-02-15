@@ -1,7 +1,9 @@
 from database import get_owe_data, get_capex_data
+from getExcelCommands import make_excel
 from helpers import *
 from dataHelpers import get_data_type_two
 from capexCommands import execute_capex_command
+import os
 
 
 def execute_data_command(command, chat_id):
@@ -103,5 +105,26 @@ def execute_data_command(command, chat_id):
             return
         data1 = data["data1"]
         execute_capex_command(data1, cmd, chat_id)
+    elif command[:9] == "GETEXCEL ":
+        cmd = command.split(" ")
+        if len(cmd[1]) > 5 or len(cmd[1]) < 5:
+            broadcast_msg(chat_id, "Invalid input provided.")
+            return
+        data = get_owe_data(cmd[1])
+        if not data:
+            broadcast_msg(chat_id, "No data is available for given input.")
+            return
+        if "msg" in data.keys():
+            broadcast_msg(chat_id, "Invalid input provided.")
+            return
+        data1 = data["data1"]
+        if cmd[2] not in data1.keys():
+            broadcast_msg(chat_id, "Invalid input provided.")
+            return
+        make_excel(cmd[1], cmd[2], data1)
+        if os.path.isfile(f"{cmd[2]}.xlsx"):
+            sendFile(chat_id, "excel", f"{cmd[2]}.xlsx", f"{cmd[2]}.xlsx")
+        else:
+            broadcast_msg(chat_id, "Something went wrong. Please try again later.")
     else:
         broadcast_msg(chat_id, "No such command exists..")
