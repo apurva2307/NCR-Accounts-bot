@@ -5,6 +5,7 @@ def make_excel(month, pu, data):
     wb = load_workbook("customFile.xlsx")
     customSheet = wb["Sheet1"]
     customSheet.cell(1, 4).value = f"{pu}"
+    customSheet.cell(1, 10).value = "Fig in crore"
     customSheet.cell(3, 4).value = f"{month[:3]}' {int(month[3:])-1}"
     customSheet.cell(3, 5).value = f"{month[:3]}' {month[3:]}"
     customSheet.cell(3, 6).value = f"{month[:3]}' {month[3:]}"

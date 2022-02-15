@@ -124,6 +124,7 @@ def execute_data_command(command, chat_id):
         make_excel(cmd[1], cmd[2], data1)
         if os.path.isfile(f"{cmd[2]}.xlsx"):
             sendFile(chat_id, "excel", f"{cmd[2]}.xlsx", f"{cmd[2]}.xlsx")
+            os.remove(f"{cmd[2]}.xlsx")
         else:
             broadcast_msg(chat_id, "Something went wrong. Please try again later.")
     else:
