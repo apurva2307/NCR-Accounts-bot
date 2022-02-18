@@ -3,9 +3,15 @@ from openpyxl import load_workbook
 
 def make_excel(month, pu, data, lastYearData):
     wb = load_workbook("customFile.xlsx")
+    if month[:3] in ["JAN", "FEB", "MAR"]:
+        lastYear = int(month[3:]) - 1
+    else:
+        lastYear = int(month[3:])
     customSheet = wb["Sheet1"]
     customSheet.cell(1, 4).value = f"{pu}"
     customSheet.cell(1, 10).value = "Fig in crore"
+    customSheet.cell(3, 2).value = f"20{lastYear-1}-{lastYear}"
+    customSheet.cell(3, 3).value = f"20{lastYear}-{lastYear+1}"
     customSheet.cell(3, 4).value = f"{month[:3]}' {int(month[3:])-1}"
     customSheet.cell(3, 5).value = f"{month[:3]}' {month[3:]}"
     customSheet.cell(3, 6).value = f"{month[:3]}' {month[3:]}"
