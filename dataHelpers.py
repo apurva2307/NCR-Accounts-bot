@@ -24,3 +24,12 @@ def get_data_type_two(title, puData1, puData2, percent, *args):
         else:
             msg += f"D{index+3}: {value1} ({value2}{showPercent})\n"
     return msg
+
+
+def showSummary(pu, data2):
+    puData = data2[pu]
+    msg = "Figures in crores\n"
+    for index, val in enumerate(puData):
+        if index == 0:
+            msg += f"Actuals Full Last Year: {val}"
+    return msg

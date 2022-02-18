@@ -1,7 +1,7 @@
 from database import get_owe_data, get_capex_data
 from getExcelCommands import make_excel
 from helpers import *
-from dataHelpers import get_data_type_two
+from dataHelpers import get_data_type_two, showSummary
 from capexCommands import execute_capex_command
 import os
 
@@ -89,7 +89,9 @@ def execute_data_command(command, chat_id):
                     broadcast_msg(chat_id, message)
                 if pu in rowsMap:
                     data2 = data["data2"]
+                    msg = showSummary(pu, data2)
                     broadcast_msg(chat_id, "Data2 extracted.")
+                    broadcast_msg(chat_id, msg)
 
             if len(cmd) == 4:
                 if cmd[3] == "VAR":
