@@ -44,7 +44,23 @@ def execute_data_command(command, chat_id):
 
         if len(cmd) >= 3:
             pu = cmd[2]
-            if pu not in data1.keys() and pu not in options:
+            rowsMap = [
+                "Staff",
+                "Non-Staff",
+                "D-Traction",
+                "E-Traction",
+                "E-Office",
+                "HSD-Civil",
+                "HSD-Gen",
+                "Lease",
+                "IRCA",
+                "IRFA",
+                "IRFC",
+                "Coach-C",
+                "Station-C",
+                "Colony-C",
+            ]
+            if pu not in data1.keys() and pu not in options and pu not in rowsMap:
                 broadcast_msg(chat_id, "Invalid input provided.")
                 return
             if len(cmd) == 3:
@@ -71,6 +87,10 @@ def execute_data_command(command, chat_id):
                         "Net BP (Var. BP in %) >>", puData, puDataUtil, True
                     )
                     broadcast_msg(chat_id, message)
+                if pu in rowsMap:
+                    data2 = data["data2"]
+                    broadcast_msg(chat_id, "Data2 extracted.")
+
             if len(cmd) == 4:
                 if cmd[3] == "VAR":
                     puData1 = data1[pu]["varAcBp"]
