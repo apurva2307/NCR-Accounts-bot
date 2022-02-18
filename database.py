@@ -1,8 +1,21 @@
 from decouple import config
-import requests, json
+import requests, json, jwt, datetime
+from dateutil import tz
 
 data_url = config("DATA_URL")
 ncr_data_url = config("NCR_DATA_URL")
+token = config("TOKEN")
+# encodedToken = jwt.encode(
+#     {
+#         "name": "shailendra",
+#         "exp": datetime.datetime.now(tz=tz.gettz("Asia/Kolkata"))
+#         + datetime.timedelta(seconds=300),
+#     },
+#     token,
+#     algorithm="HS256",
+# )
+# print(encodedToken)
+encodedToken = token
 
 
 def addToDatabase(chat_id, username, first_name):
@@ -18,7 +31,7 @@ def addToDatabase(chat_id, username, first_name):
 
 def get_all_users():
     usersURL = f"{data_url}/getAllUsers"
-    headers = {"token": config("TOKEN")}
+    headers = {"token": encodedToken}
     allUsers = requests.get(usersURL, headers=headers).json()
     if "telegramUsers" in allUsers.keys():
         return allUsers["telegramUsers"]
@@ -28,7 +41,7 @@ def get_all_users():
 
 def get_single_user(chat_id):
     userURL = f"{data_url}/{chat_id}"
-    headers = {"token": config("TOKEN")}
+    headers = {"token": encodedToken}
     user = requests.get(userURL, headers=headers).json()
     if "telegramUser" in user.keys():
         return user["telegramUser"]
@@ -38,7 +51,7 @@ def get_single_user(chat_id):
 
 def delete_single_user(chat_id):
     userURL = f"{data_url}/{chat_id}"
-    headers = {"token": config("TOKEN")}
+    headers = {"token": encodedToken}
     user = requests.delete(userURL, headers=headers).json()
     if "msg" in user.keys():
         return user["msg"]
@@ -48,7 +61,7 @@ def delete_single_user(chat_id):
 
 def get_owe_data(month):
     dataURL = f"{ncr_data_url}/getData/{month}/OWE"
-    headers = {"token": config("TOKEN")}
+    headers = {"token": encodedToken}
     res = requests.get(dataURL, headers=headers).json()
     if "monthData" in res.keys():
         return res["monthData"]
@@ -58,7 +71,7 @@ def get_owe_data(month):
 
 def get_capex_data(month):
     dataURL = f"{ncr_data_url}/getData/{month}/CAPEX"
-    headers = {"token": config("TOKEN")}
+    headers = {"token": encodedToken}
     res = requests.get(dataURL, headers=headers).json()
     if "monthData" in res.keys():
         return res["monthData"]

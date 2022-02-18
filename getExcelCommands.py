@@ -1,7 +1,7 @@
 from openpyxl import load_workbook
 
 
-def make_excel(month, pu, data):
+def make_excel(month, pu, data, lastYearData):
     wb = load_workbook("customFile.xlsx")
     customSheet = wb["Sheet1"]
     customSheet.cell(1, 4).value = f"{pu}"
@@ -13,7 +13,10 @@ def make_excel(month, pu, data):
     toEndActualsCoppy = data[pu]["toEndActualsCoppy"]
     toEndBp = data[pu]["toEndBp"]
     toEndActuals = data[pu]["toEndActuals"]
+    lastFullYearActuals = lastYearData[pu]["toEndActuals"]
 
+    for val in range(4, 16):
+        customSheet.cell(val, 2).value = round(lastFullYearActuals[val - 4] / 10000, 2)
     for val in range(4, 16):
         customSheet.cell(val, 3).value = round(budget[val - 4] / 10000, 2)
     for val in range(4, 16):
