@@ -117,12 +117,14 @@ def execute_data_command(command, chat_id):
         if "msg" in data.keys():
             broadcast_msg(chat_id, "Invalid input provided.")
             return
-        if cmd[1] in ["JAN", "FEB", "MAR"]:
+        if cmd[1][:3] in ["JAN", "FEB", "MAR"]:
             lastYear = int(cmd[1][3:]) - 1
         else:
             lastYear = cmd[1][3:]
         data1 = data["data1"]
-        lastYearData = get_owe_data(f"MAR{lastYear}")["data1"]
+        print(lastYear)
+        lastYearData = get_owe_data(f"MAR{lastYear}")
+        print(lastYearData)
         if cmd[2] not in data1.keys():
             broadcast_msg(chat_id, "Invalid input provided.")
             return
