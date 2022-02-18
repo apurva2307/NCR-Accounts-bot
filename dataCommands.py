@@ -124,11 +124,10 @@ def execute_data_command(command, chat_id):
         data1 = data["data1"]
         print(lastYear)
         lastYearData = get_owe_data(f"MAR{lastYear}")
-        print(lastYearData)
         if cmd[2] not in data1.keys():
             broadcast_msg(chat_id, "Invalid input provided.")
             return
-        make_excel(cmd[1], cmd[2], data1, lastYearData)
+        make_excel(cmd[1], cmd[2], data1, lastYearData["data1"])
         if os.path.isfile(f"{cmd[2]}.xlsx"):
             sendFile(chat_id, "excel", f"{cmd[2]}.xlsx", f"{cmd[2]}.xlsx")
             os.remove(f"{cmd[2]}.xlsx")
