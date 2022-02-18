@@ -60,51 +60,45 @@ def getMessage():
     req = request.get_json()
     print("req>>", req)
     chat_id, txt, first_name, username = parse_request(req)
-    try:
-        if "text" in req["message"].keys():
-            if txt == "/start" or txt == "/subscribe":
-                response = addToDatabase(chat_id, username, first_name)
-                json_msg = json.loads(response)
-                if "msg" in json_msg.keys():
-                    if (
-                        json_msg["msg"]
-                        == f"chat_Id {chat_id} already exists for NCR_Accounts bot."
-                    ):
-                        broadcast_msg(
-                            chat_id,
-                            "You have already subscribed for NCR_Accounts updates service.",
-                        )
-                    else:
-                        broadcast_msg("44114772", json.dumps(json_msg))
-                else:
-                    broadcast_msg(
-                        chat_id,
-                        "Thanks for subscribing for NCR_Accounts updates service.",
-                    )
-                broadcast_admin(response)
-                broadcast_admin(chat_id)
-                broadcast_admin(f"@{username}")
-            elif txt == "/unsubscribe":
-                response = delete_single_user(chat_id)
+    if "text" in req["message"].keys():
+        if txt == "/start" or txt == "/subscribe":
+            response = addToDatabase(chat_id, username, first_name)
+            json_msg = json.loads(response)
+            if "msg" in json_msg.keys():
                 if (
-                    response
-                    == f"chat Id {chat_id} for NCR_Accounts bot is successfully deleted."
+                    json_msg["msg"]
+                    == f"chat_Id {chat_id} already exists for NCR_Accounts bot."
                 ):
                     broadcast_msg(
                         chat_id,
-                        "You are successfully unsubscribed from NCR_Accounts updates service.",
+                        "You have already subscribed for NCR_Accounts updates service.",
                     )
-                broadcast_admin(response)
-                broadcast_admin(chat_id)
-                broadcast_admin(f"@{username}")
-            elif is_command(txt):
-                execute_command(txt, chat_id)
+                else:
+                    broadcast_msg("44114772", json.dumps(json_msg))
             else:
-                execute_data_command(txt, chat_id)
-    except:
-        broadcast_msg(
-            chat_id, "Something went wrong during processing of your request."
-        )
+                broadcast_msg(
+                    chat_id, "Thanks for subscribing for NCR_Accounts updates service."
+                )
+            broadcast_admin(response)
+            broadcast_admin(chat_id)
+            broadcast_admin(f"@{username}")
+        elif txt == "/unsubscribe":
+            response = delete_single_user(chat_id)
+            if (
+                response
+                == f"chat Id {chat_id} for NCR_Accounts bot is successfully deleted."
+            ):
+                broadcast_msg(
+                    chat_id,
+                    "You are successfully unsubscribed from NCR_Accounts updates service.",
+                )
+            broadcast_admin(response)
+            broadcast_admin(chat_id)
+            broadcast_admin(f"@{username}")
+        elif is_command(txt):
+            execute_command(txt, chat_id)
+        else:
+            execute_data_command(txt, chat_id)
     return "!", 200
 
 
