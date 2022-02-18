@@ -192,3 +192,22 @@ def getPHsMap():
             "rowMap": ["PH30", "PH36", "TOTAL"],
         },
     }
+
+
+def get_owe_summary_keys():
+    return [
+        "Staff",
+        "Non-Staff",
+        "D-Traction",
+        "E-Traction",
+        "E-Office",
+        "HSD-Civil",
+        "HSD-Gen",
+        "Lease",
+        "IRCA",
+        "IRFA",
+        "IRFC",
+        "Coach-C",
+        "Station-C",
+        "Colony-C",
+    ]
