@@ -89,6 +89,7 @@ def execute_data_command(command, chat_id):
                     broadcast_msg(chat_id, message)
                 if pu in rowsMap:
                     data2 = data["data2"]
+                    print(data2)
                     msg = showSummary(pu, data2)
                     broadcast_msg(chat_id, "Data2 extracted.")
                     broadcast_msg(chat_id, msg)
