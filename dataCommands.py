@@ -22,9 +22,6 @@ def execute_data_command(command, chat_id):
             broadcast_msg(chat_id, data["msg"])
             return
         data1 = data["data1"]
-        print(data)
-        print("Keys>>", data.keys())
-        # data2 = data["data2"]
         if len(cmd) == 2:
             puData1 = data1["STAFF"]["toEndActuals"]
             puData1Util = data1["STAFF"]["budgetUtilization"]
@@ -91,10 +88,10 @@ def execute_data_command(command, chat_id):
                     )
                     broadcast_msg(chat_id, message)
                 if pu in rowsMap:
-                    # print(data2)
-                    # msg = showSummary(pu, data2)
-                    broadcast_msg(chat_id, "Data2 extracted.")
-                    # broadcast_msg(chat_id, msg)
+                    if "data2" in data.keys():
+                        data2 = data["data2"]
+                        msg = showSummary(pu, data2)
+                        broadcast_msg(chat_id, msg)
 
             if len(cmd) == 4:
                 if cmd[3] == "VAR":

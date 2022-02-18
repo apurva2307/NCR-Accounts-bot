@@ -5,6 +5,8 @@ from dateutil import tz
 data_url = config("DATA_URL")
 ncr_data_url = config("NCR_DATA_URL")
 token = config("TOKEN")
+
+
 def gen_token(token):
     encodedToken = jwt.encode(
         {
@@ -16,6 +18,9 @@ def gen_token(token):
         algorithm="HS256",
     )
     return encodedToken
+
+
+print(gen_token(token))
 
 
 def addToDatabase(chat_id, username, first_name):
