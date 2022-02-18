@@ -73,6 +73,10 @@ def execute_data_command(command, chat_id):
                         title = f"{pu} Total Actuals (Budget Util.) >>"
                     message = get_data_type_two(title, puData, puDataUtil, True)
                     broadcast_msg(chat_id, message)
+                    if "data2" in data.keys():
+                        data2 = data["data2"]
+                        if pu in data2.keys():
+                            msg = showSummary(pu, data2)
                 if pu == "BUD":
                     puData = data1["NET"]["budget"]
                     puDataUtil = data1["NET"]["budgetUtilization"]
