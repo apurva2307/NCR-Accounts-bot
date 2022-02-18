@@ -19,7 +19,7 @@ def execute_data_command(command, chat_id):
             broadcast_msg(chat_id, "No data is available for given input.")
             return
         if "msg" in data.keys():
-            broadcast_msg(chat_id, "Invalid input provided.")
+            broadcast_msg(chat_id, data["msg"])
             return
         data1 = data["data1"]
         if len(cmd) == 2:
@@ -101,7 +101,7 @@ def execute_data_command(command, chat_id):
             broadcast_msg(chat_id, "No data is available for given input.")
             return
         if "msg" in data.keys():
-            broadcast_msg(chat_id, "Invalid input provided.")
+            broadcast_msg(chat_id, data["msg"])
             return
         data1 = data["data1"]
         execute_capex_command(data1, cmd, chat_id)
@@ -115,7 +115,7 @@ def execute_data_command(command, chat_id):
             broadcast_msg(chat_id, "No data is available for given input.")
             return
         if "msg" in data.keys():
-            broadcast_msg(chat_id, "Invalid input provided.")
+            broadcast_msg(chat_id, data["msg"])
             return
         if cmd[1][:3] in ["JAN", "FEB", "MAR"]:
             lastYear = int(cmd[1][3:]) - 1
