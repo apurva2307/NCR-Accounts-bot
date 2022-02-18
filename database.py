@@ -14,7 +14,6 @@ encodedToken = jwt.encode(
     token,
     algorithm="HS256",
 )
-encodedToken = token
 
 
 def addToDatabase(chat_id, username, first_name):
