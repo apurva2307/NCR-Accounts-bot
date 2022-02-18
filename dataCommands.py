@@ -122,7 +122,6 @@ def execute_data_command(command, chat_id):
         else:
             lastYear = cmd[1][3:]
         data1 = data["data1"]
-        print(lastYear)
         lastYearData = get_owe_data(f"MAR{lastYear}")
         if cmd[2] not in data1.keys():
             broadcast_msg(chat_id, "Invalid input provided.")

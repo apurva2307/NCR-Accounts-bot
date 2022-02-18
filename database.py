@@ -5,16 +5,15 @@ from dateutil import tz
 data_url = config("DATA_URL")
 ncr_data_url = config("NCR_DATA_URL")
 token = config("TOKEN")
-# encodedToken = jwt.encode(
-#     {
-#         "name": "shailendra",
-#         "exp": datetime.datetime.now(tz=tz.gettz("Asia/Kolkata"))
-#         + datetime.timedelta(seconds=300),
-#     },
-#     token,
-#     algorithm="HS256",
-# )
-# print(encodedToken)
+encodedToken = jwt.encode(
+    {
+        "name": "shailendra",
+        "exp": datetime.datetime.now(tz=tz.gettz("Asia/Kolkata"))
+        + datetime.timedelta(seconds=300),
+    },
+    token,
+    algorithm="HS256",
+)
 encodedToken = token
 
 
