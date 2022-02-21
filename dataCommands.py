@@ -45,20 +45,20 @@ def execute_data_command(command, chat_id):
         if len(cmd) >= 3:
             pu = cmd[2]
             rowsMap = [
-                "Staff",
-                "Non-Staff",
-                "D-Traction",
-                "E-Traction",
-                "E-Office",
-                "HSD-Civil",
-                "HSD-Gen",
-                "Lease",
+                "STAFF",
+                "NON-STAFF",
+                "D-TRACTION",
+                "E-TRACTION",
+                "E-OFFICE",
+                "HSD-CIVIL",
+                "HSD-GEN",
+                "LEASE",
                 "IRCA",
                 "IRFA",
                 "IRFC",
-                "Coach-C",
-                "Station-C",
-                "Colony-C",
+                "COACH-C",
+                "STATION-C",
+                "COLONY-C",
             ]
             if pu not in data1.keys() and pu not in options and pu not in rowsMap:
                 broadcast_msg(chat_id, "Invalid input provided.")

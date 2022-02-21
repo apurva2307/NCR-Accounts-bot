@@ -95,7 +95,7 @@ def execute_command(command, chat_id):
     elif command[:5] == "/all " and chat_id == 44114772:
         msg = command[5:]
         broadcastToAll(msg)
-    elif command[:5] == "/getsumkeys":
+    elif command == "/getsumkeys":
         keys = get_owe_summary_keys()
         msg = ""
         for key in keys:
