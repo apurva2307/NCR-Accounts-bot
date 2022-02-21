@@ -29,19 +29,36 @@ def get_data_type_two(title, puData1, puData2, percent, *args):
 def showSummary(pu, data2):
     puData = data2[pu]
     msg = "Figures in crores\n"
-    for index, val in enumerate(puData):
-        if index == 0:
-            msg += f"Actuals Full Last Year: {val}\n"
-        elif index == 1:
-            msg += f"Revised Grant: {val}\n"
-        elif index == 2:
-            msg += f"Actuals upto month COPPY: {val}\n"
-        elif index == 4:
-            msg += f"Actuals upto month: {val}\n"
-        elif index == 7:
-            msg += f"Variation over COPPY absolute: {val}\n"
-        elif index == 8:
-            msg += f"Variation over COPPY percentage: {val}%\n"
-        elif index == 9:
-            msg += f"Budget utilization: {val}%\n"
+    if pu in ["IRCA", "IRFA", "IRFC", "COACH-C", "STATION-C", "COLONY-C"]:
+        for index, val in enumerate(puData):
+            if index == 0:
+                msg += f"Actuals Full Last Year: {val}\n"
+            elif index == 1:
+                msg += f"Revised Grant: {val}\n"
+            elif index == 2:
+                msg += f"Actuals upto month COPPY: {val}\n"
+            elif index == 3:
+                msg += f"Actuals upto month: {val}\n"
+            elif index == 4:
+                msg += f"Variation over COPPY absolute: {val}\n"
+            elif index == 5:
+                msg += f"Variation over COPPY percentage: {val}%\n"
+            elif index == 6:
+                msg += f"Budget utilization: {val}%\n"
+    else:
+        for index, val in enumerate(puData):
+            if index == 0:
+                msg += f"Actuals Full Last Year: {val}\n"
+            elif index == 1:
+                msg += f"Revised Grant: {val}\n"
+            elif index == 2:
+                msg += f"Actuals upto month COPPY: {val}\n"
+            elif index == 4:
+                msg += f"Actuals upto month: {val}\n"
+            elif index == 7:
+                msg += f"Variation over COPPY absolute: {val}\n"
+            elif index == 8:
+                msg += f"Variation over COPPY percentage: {val}%\n"
+            elif index == 9:
+                msg += f"Budget utilization: {val}%\n"
     return msg

@@ -20,6 +20,9 @@ def gen_token(token):
     return encodedToken
 
 
+print(gen_token(token))
+
+
 def addToDatabase(chat_id, username, first_name):
     registerURL = f"{data_url}/register"
     payload = {
