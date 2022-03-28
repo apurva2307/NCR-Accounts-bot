@@ -94,6 +94,7 @@ def execute_data_command(command, chat_id, unit):
                     )
                     broadcast_msg(chat_id, message)
                 if pu in rowsMap:
+                    broadcast_admin(str(data.keys()))
                     if "data2" in data.keys():
                         data2 = data["data2"]
                         msg = showSummary(pu, data2)
@@ -165,3 +166,7 @@ def execute_data_command(command, chat_id, unit):
             broadcast_msg(chat_id, "Something went wrong. Please try again later.")
     else:
         broadcast_msg(chat_id, "No such command exists..")
+
+
+if __name__ == "__main__":
+    execute_data_command("owe feb22 d-traction", 44114772, "NCR")
