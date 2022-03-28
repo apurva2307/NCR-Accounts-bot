@@ -23,7 +23,10 @@ def execute_data_command(command, chat_id, unit):
             return
         data1 = data["data1"]
         if unit != "NCR":
-            data1 = data["data3"][unit]
+            if "data3" in data.keys():
+                data1 = data["data3"][unit]
+            else:
+                return broadcast_msg(chat_id, "No data is available for given input.")
         if len(cmd) == 2:
             puData1 = data1["STAFF"]["toEndActuals"]
             puData1Util = data1["STAFF"]["budgetUtilization"]
@@ -75,10 +78,6 @@ def execute_data_command(command, chat_id, unit):
                         title = f"{pu} Total Actuals (Budget Util.) >>"
                     message = get_data_type_two(title, puData, puDataUtil, True)
                     broadcast_msg(chat_id, message)
-                    if "data2" in data.keys():
-                        data2 = data["data2"]
-                        if pu in data2.keys():
-                            msg = showSummary(pu, data2)
                 if pu == "BUD":
                     puData = data1["NET"]["budget"]
                     puDataUtil = data1["NET"]["budgetUtilization"]
@@ -98,7 +97,10 @@ def execute_data_command(command, chat_id, unit):
                         data2 = data["data2"]
                         msg = showSummary(pu, data2)
                         broadcast_msg(chat_id, msg)
-
+                    else:
+                        return broadcast_msg(
+                            chat_id, "No data is available for given input."
+                        )
             if len(cmd) == 4:
                 if cmd[3] == "VAR":
                     puData1 = data1[pu]["varAcBp"]
