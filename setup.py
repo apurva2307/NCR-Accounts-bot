@@ -99,15 +99,15 @@ def getMessage():
             execute_command(txt, chat_id)
         else:
             unit = "NCR"
-            if txt.upper().startswith("JHS"):
+            if txt.upper().startswith("JHS "):
                 unit = "JHS"
-                txt = txt[3:]
-            elif txt.upper().startswith("AGC"):
-                unit = "AGC"
-                txt = txt[3:]
-            elif txt.upper().startswith("PRYJ"):
-                unit = "PRYJ"
                 txt = txt[4:]
+            elif txt.upper().startswith("AGC "):
+                unit = "AGC"
+                txt = txt[4:]
+            elif txt.upper().startswith("PRYJ "):
+                unit = "PRYJ"
+                txt = txt[5:]
             execute_data_command(txt, chat_id, unit)
     return "!", 200
 

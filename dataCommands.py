@@ -97,7 +97,10 @@ def execute_data_command(command, chat_id, unit):
                     if "data2" in data.keys():
                         data2 = data["data2"]
                         msg = showSummary(pu, data2)
+                        broadcast_admin(str(data2))
                         broadcast_msg(chat_id, msg)
+                    else:
+                        broadcast_admin(f"{pu} not found in commands.")
 
             if len(cmd) == 4:
                 if cmd[3] == "VAR":
