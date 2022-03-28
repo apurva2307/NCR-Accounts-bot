@@ -3,7 +3,7 @@ from flask import Flask, request
 import requests, json
 from helpers import *
 from commands import *
-from database import addToDatabase, delete_single_user
+from database import addToDatabase, delete_single_user, get_single_user
 from dataCommands import execute_data_command
 
 app = Flask(__name__)
@@ -77,7 +77,8 @@ def getMessage():
                     broadcast_msg("44114772", json.dumps(json_msg))
             else:
                 broadcast_msg(
-                    chat_id, "Thanks for subscribing for NCR_Accounts updates service."
+                    chat_id,
+                    "Thanks for subscribing for NCR_Accounts updates service. Kindly wait for approval from admin, then only you can use services of this bot.",
                 )
             broadcast_admin(response)
             broadcast_admin(chat_id)
@@ -98,17 +99,29 @@ def getMessage():
         elif is_command(txt):
             execute_command(txt, chat_id)
         else:
-            unit = "NCR"
-            if txt.upper().startswith("JHS "):
-                unit = "JHS"
-                txt = txt[4:]
-            elif txt.upper().startswith("AGC "):
-                unit = "AGC"
-                txt = txt[4:]
-            elif txt.upper().startswith("PRYJ "):
-                unit = "PRYJ"
-                txt = txt[5:]
-            execute_data_command(txt, chat_id, unit)
+            res = get_single_user(chat_id)
+            if not res:
+                return "!", 200
+            if res["role"] == "banned":
+                broadcast_msg(
+                    chat_id,
+                    "You are not authorized to access services of this bot. Kindly contact admin @Dream_Big18 for getting access.",
+                )
+            elif res["role"] == "user" or res["role"] == "admin":
+                if is_command(txt):
+                    execute_command(txt, chat_id)
+                else:
+                    unit = "NCR"
+                    if txt.upper().startswith("JHS "):
+                        unit = "JHS"
+                        txt = txt[4:]
+                    elif txt.upper().startswith("AGC "):
+                        unit = "AGC"
+                        txt = txt[4:]
+                    elif txt.upper().startswith("PRYJ "):
+                        unit = "PRYJ"
+                        txt = txt[5:]
+                    execute_data_command(txt, chat_id, unit)
     return "!", 200
 
 

@@ -53,6 +53,24 @@ def get_single_user(chat_id):
         return json.dumps(user)
 
 
+def update_user_role(chat_id, role):
+    userURL = f"{data_url}/{chat_id}"
+    encodedToken = gen_token(token)
+    headers = {"token": encodedToken}
+    payload = {"role": role}
+    user = requests.post(userURL, headers=headers, json=payload).json()
+    return json.dumps(user)
+
+
+def update_user_info(chat_id, otherinfo):
+    userURL = f"{data_url}/{chat_id}"
+    encodedToken = gen_token(token)
+    headers = {"token": encodedToken}
+    payload = {"otherinfo": otherinfo}
+    user = requests.post(userURL, headers=headers, json=payload).json()
+    return json.dumps(user)
+
+
 def delete_single_user(chat_id):
     userURL = f"{data_url}/{chat_id}"
     encodedToken = gen_token(token)
