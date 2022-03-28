@@ -6,7 +6,7 @@ from capexCommands import execute_capex_command
 import os
 
 
-def execute_data_command(command, chat_id):
+def execute_data_command(command, chat_id, unit):
     command = command.upper()
     options = ["BUD", "BP", "COPPY", "VAR", "VARBP", "VARCOPPY", "BUDUTIL"]
     if command[0:4] == "OWE ":
@@ -22,6 +22,8 @@ def execute_data_command(command, chat_id):
             broadcast_msg(chat_id, data["msg"])
             return
         data1 = data["data1"]
+        if unit != "NCR":
+            data1 = data["data3"][unit]
         if len(cmd) == 2:
             puData1 = data1["STAFF"]["toEndActuals"]
             puData1Util = data1["STAFF"]["budgetUtilization"]

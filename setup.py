@@ -98,7 +98,17 @@ def getMessage():
         elif is_command(txt):
             execute_command(txt, chat_id)
         else:
-            execute_data_command(txt, chat_id)
+            unit = "NCR"
+            if txt.upper().startswith("JHS"):
+                unit = "JHS"
+                txt = txt[3:]
+            elif txt.upper().startswith("AGC"):
+                unit = "AGC"
+                txt = txt[3:]
+            elif txt.upper().startswith("PRYJ"):
+                unit = "PRYJ"
+                txt = txt[4:]
+            execute_data_command(txt, chat_id, unit)
     return "!", 200
 
 

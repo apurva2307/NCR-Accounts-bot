@@ -20,9 +20,6 @@ def gen_token(token):
     return encodedToken
 
 
-print(gen_token(token))
-
-
 def addToDatabase(chat_id, username, first_name):
     registerURL = f"{data_url}/register"
     payload = {
@@ -87,3 +84,7 @@ def get_capex_data(month):
         return res["monthData"]
     else:
         return res
+
+
+if __name__ == "__main__":
+    print(gen_token(token))
