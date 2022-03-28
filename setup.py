@@ -97,11 +97,9 @@ def getMessage():
                 broadcast_admin(response)
                 broadcast_admin(chat_id)
                 broadcast_admin(f"@{username}")
-            elif is_command(txt):
-                execute_command(txt, chat_id)
             else:
                 res = get_single_user(chat_id)
-                if not res or "chatId" or type(res) == str:
+                if not res or type(res) == str:
                     return "!", 200
                 if res["role"] == "banned":
                     broadcast_msg(
