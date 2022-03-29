@@ -110,7 +110,6 @@ def getMessage():
                 elif res["role"] == "user" or res["role"] == "admin":
                     if res["role"] == "admin":
                         execute_admin_command(txt, chat_id)
-                        return "!", 200
                     if is_command(txt):
                         execute_command(txt, chat_id)
                     else:

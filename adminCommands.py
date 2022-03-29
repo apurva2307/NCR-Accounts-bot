@@ -14,6 +14,7 @@ def execute_admin_command(cmd, chat_id):
             broadcast_admin(res)
         else:
             broadcast_admin("Kindly provide valid role.")
+        return "!", 200
 
     elif command[:11] == "updateinfo ":
         cmds = cmd[11:].split(":")
@@ -24,3 +25,4 @@ def execute_admin_command(cmd, chat_id):
             otherinfo[info.strip().split("-")[0]] = info.strip().split("-")[1]
         res = update_user_info(chatId, otherinfo)
         broadcast_admin(res)
+        return "!", 200
