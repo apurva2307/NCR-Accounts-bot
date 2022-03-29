@@ -1,6 +1,7 @@
 from decouple import config
 from flask import Flask, request
 import requests, json
+from adminCommands import execute_admin_command
 from helpers import *
 from commands import *
 from database import addToDatabase, delete_single_user, get_single_user
@@ -107,6 +108,8 @@ def getMessage():
                         "You are not authorized to access services of this bot. Kindly contact admin @Dream_Big18 for getting access.",
                     )
                 elif res["role"] == "user" or res["role"] == "admin":
+                    if res["role"] == "admin":
+                        execute_admin_command(txt, chat_id)
                     if is_command(txt):
                         execute_command(txt, chat_id)
                     else:
