@@ -1,5 +1,5 @@
-from database import update_user_role, update_user_info
-from helpers import broadcast_admin
+from database import update_user_role, update_user_info, delete_single_user
+from helpers import broadcast_msg
 
 
 def execute_admin_command(cmd, chat_id):
@@ -11,11 +11,12 @@ def execute_admin_command(cmd, chat_id):
         roles = ["admin", "user", "banned"]
         if role in roles:
             res = update_user_role(chatId, role)
-            broadcast_admin(res)
+            broadcast_msg(chat_id, res)
         else:
-            broadcast_admin("Kindly provide valid role.")
-        return "!", 200
-
+            broadcast_msg(chat_id, "Kindly provide valid role.")
+    elif command[:8] == "deluser ":
+        res = delete_single_user(command[8:].strip())
+        broadcast_msg(chat_id, res)
     elif command[:11] == "updateinfo ":
         cmds = cmd[11:].split(":")
         chatId = cmds[0].strip()
@@ -24,5 +25,4 @@ def execute_admin_command(cmd, chat_id):
         for info in infos:
             otherinfo[info.strip().split("-")[0]] = info.strip().split("-")[1]
         res = update_user_info(chatId, otherinfo)
-        broadcast_admin(res)
-        return "!", 200
+        broadcast_msg(chat_id, res)
