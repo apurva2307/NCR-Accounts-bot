@@ -2,8 +2,8 @@ from database import update_user_role, update_user_info
 from helpers import broadcast_admin
 
 
-def execute_admin_command(command, chat_id):
-    command = command.lower()
+def execute_admin_command(cmd, chat_id):
+    command = cmd.lower()
     if command[:11] == "updaterole ":
         cmds = command[11:].split(":")
         chatId = cmds[0].strip()
@@ -16,7 +16,7 @@ def execute_admin_command(command, chat_id):
             broadcast_admin("Kindly provide valid role.")
 
     elif command[:11] == "updateinfo ":
-        cmds = command[11:].split(":")
+        cmds = cmd[11:].split(":")
         chatId = cmds[0].strip()
         infos = cmds[1].strip().split(",")
         otherinfo = {}

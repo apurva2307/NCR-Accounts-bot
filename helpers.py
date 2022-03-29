@@ -58,7 +58,7 @@ def broadcast_items(chat_id, item, type):
 def parse_request(req):
     chat_id = req["message"]["chat"]["id"]
     if "text" in req["message"].keys():
-        txt = req["message"]["text"].lower()
+        txt = req["message"]["text"]
         pickle.dumps(txt)
     elif "sticker" in req["message"].keys():
         txt = req["message"]["sticker"]["file_id"]
