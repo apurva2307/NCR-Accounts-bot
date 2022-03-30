@@ -1,6 +1,6 @@
 import requests, json, pickle
 from decouple import config
-from database import get_all_users
+from database import get_all_users, get_single_user
 
 API_KEY = config("API_KEY")
 API_URL = f"https://api.telegram.org/bot{API_KEY}"
@@ -82,3 +82,13 @@ def broadcastToAll(msg):
 
 def broadcast_admin(msg):
     broadcast_msg("44114772", msg)
+
+
+def get_user_role(chat_id):
+    res = get_single_user(chat_id)
+    if not res or type(res) == str:
+        return ""
+    elif "role" in res.keys():
+        return res["role"]
+    else:
+        return ""

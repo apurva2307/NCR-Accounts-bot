@@ -102,17 +102,19 @@ def getMessage():
                 res = get_single_user(chat_id)
                 if not res or type(res) == str:
                     return "!", 200
-                if res["role"] == "banned":
+                role = res["role"]
+                if role == "banned":
                     broadcast_msg(
                         chat_id,
                         "You are not authorized to access services of this bot. Kindly contact admin @Dream_Big18 for getting access.",
                     )
-                elif res["role"] == "user" or res["role"] == "admin":
-                    if res["role"] == "admin":
-                        execute_admin_command(txt, chat_id)
+                elif role == "user" or role == "admin":
                     if is_command(txt):
                         execute_command(txt, chat_id)
                     else:
+                        adminCmdExecuted = "No"
+                        if role == "admin":
+                            adminCmdExecuted = execute_admin_command(txt, chat_id)
                         unit = "NCR"
                         if txt.upper().startswith("JHS "):
                             unit = "JHS"
@@ -123,7 +125,8 @@ def getMessage():
                         elif txt.upper().startswith("PRYJ "):
                             unit = "PRYJ"
                             txt = txt[5:]
-                        execute_data_command(txt, chat_id, unit)
+                        if adminCmdExecuted == "No":
+                            execute_data_command(txt, chat_id, unit)
     except:
         broadcast_msg(
             chat_id,
