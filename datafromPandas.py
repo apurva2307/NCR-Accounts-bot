@@ -7,7 +7,6 @@ def get_data(month):
     first = month[0].upper()
     rest = month[1:3].lower()
     month = f"{first}{rest}-{month[3:5]}"
-    print(month)
     data = ""
     error = ""
     try:
@@ -17,9 +16,9 @@ def get_data(month):
         colsMap = [
             "PH",
             "Allocation",
-            "NCRPU-Budget",
-            "NCRPU-Actuals upto Month",
-            "NCRPU-Budget Utilization",
+            "CON-Budget",
+            "CON-Actuals upto Month",
+            "CON-Budget Utilization",
             "Skip",
             "OpenLine-Budget",
             "OpenLine-Actuals upto Month",
@@ -30,15 +29,18 @@ def get_data(month):
             "NCR-Budget Utilization",
         ]
         for i, val in enumerate(listOfColumns):
-            newCols[val] = colsMap[i]
+            if i <= len(colsMap) - 1:
+                newCols[val] = colsMap[i]
+            else:
+                continue
         data.rename(columns=newCols, inplace=True)
         data = data[
             [
                 "PH",
                 "Allocation",
-                "NCRPU-Budget",
-                "NCRPU-Actuals upto Month",
-                "NCRPU-Budget Utilization",
+                "CON-Budget",
+                "CON-Actuals upto Month",
+                "CON-Budget Utilization",
                 "OpenLine-Budget",
                 "OpenLine-Actuals upto Month",
                 "OpenLine-Budget Utilization",
@@ -81,10 +83,9 @@ def get_unit_data(df, unit):
 def get_phdata(df, ph):
     phData = df[df["PH"] == ph]
     result = {}
-    result[ph] = {}
     for index, val in phData.iterrows():
         rowData = list(val)
-        result[ph][rowData[1]] = rowData[2:]
+        result[rowData[1]] = rowData[2:]
     return result
 
 

@@ -18,7 +18,7 @@ def execute_capex_command(command, chat_id):
             ncrData = get_unit_data(data, "NCR")
             totalData = get_phdata(ncrData, "Total Source wise 11 to 65")
             msg = "Source of fund wise upto month actuals Total (Budget Utilization)>\n <b><i>Figures in Thousand</i></b>\n"
-            for key, value in totalData["Total Source wise 11 to 65"].items():
+            for key, value in totalData.items():
                 actuals = value[-2]
                 budUtil = value[-1]
                 msg += f"{key}: {actuals} ({budUtil}%)\n"
@@ -40,12 +40,13 @@ def execute_capex_command(command, chat_id):
             broadcast_msg(chat_id, msg)
         elif len(cmd) > 2:
             phList = getPHs()
+            phList.append("BUDGET")
             if cmd[2] not in phList or cmd[2] in ["G-TOTAL", "TOTAL"]:
                 broadcast_msg(chat_id, "Invalid input provided.")
                 return
             if len(cmd) == 3:
                 ncrData = get_unit_data(data, "NCR")
-                if cmd[2] in phList:
+                if cmd[2] in phList and cmd[2] != "BUDGET":
                     phData = get_phdata(ncrData, cmd[2])
                     msg = f"Source of fund wise upto month actuals for {cmd[2]} (Budget Utilization)>\n <b><i>Figures in Thousand</i></b>\n"
                     for key, value in phData.items():
@@ -56,7 +57,7 @@ def execute_capex_command(command, chat_id):
                 elif cmd[2] == "BUDGET":
                     totalData = get_phdata(ncrData, "Total Source wise 11 to 65")
                     msg = f"Source of fund wise total Budget Grant>\n <b><i>Figures in Thousand</i></b>\n"
-                    for key, value in totalData["Total Source wise 11 to 65"].items():
+                    for key, value in totalData.items():
                         budGrant = value[-3]
                         msg += f"{key}: {budGrant}\n"
                     for index, val in (
@@ -85,23 +86,33 @@ def execute_capex_command(command, chat_id):
                 #     # return msg
                 #     broadcast_msg(chat_id, msg)
             elif len(cmd) == 4:
-                totalData = data1[cmd[2]]
                 if cmd[3] not in ["NCR", "OPEN", "CON"]:
                     broadcast_msg(chat_id, "Invalid input provided.")
                     return
                 ofUnit = (
-                    "Openline"
+                    "OpenLine"
                     if cmd[3] == "OPEN"
                     else "Construction including NCRPU"
                     if cmd[3] == "CON"
                     else "Whole NCR"
                 )
+                unit = cmd[3]
+                if cmd[3] == "OPEN":
+                    unit = "OpenLine"
+                unitData = get_unit_data(data, unit)
+                totalData = get_phdata(unitData, "Total Source wise 11 to 65")
+                unitPHData = get_phdata(unitData, cmd[2])
                 msg = f"Source of fund wise upto month actuals for {cmd[2]} of {ofUnit} (Budget Utilization)>\n <b><i>Figures in Thousand</i></b>\n"
-                for key, value in totalData.items():
-                    actuals = value[cmd[3]][-2]
-                    budUtil = value[cmd[3]][-1]
+                for key, value in unitPHData.items():
+                    actuals = value[-2]
+                    budUtil = value[-1]
                     msg += f"{key}: {actuals} ({budUtil}%)\n"
-                # return msg
+                broadcast_msg(chat_id, msg)
+                msg = f"Source of fund wise upto month actuals Total for {ofUnit} (Budget Utilization)>\n <b><i>Figures in Thousand</i></b>\n"
+                for key, value in totalData.items():
+                    actuals = value[-2]
+                    budUtil = value[-1]
+                    msg += f"{key}: {actuals} ({budUtil}%)\n"
                 broadcast_msg(chat_id, msg)
                 return
             else:
