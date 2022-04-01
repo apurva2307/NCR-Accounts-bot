@@ -5,7 +5,8 @@ from adminCommands import execute_admin_command
 from helpers import *
 from commands import *
 from database import addToDatabase, delete_single_user, get_single_user
-from dataCommands import execute_data_command
+from dataCommands import execute_owe_command
+from capexCommands import execute_capex_command
 
 app = Flask(__name__)
 API_KEY = config("API_KEY")
@@ -126,7 +127,12 @@ def getMessage():
                             unit = "PRYJ"
                             txt = txt[5:]
                         if adminCmdExecuted == "No":
-                            execute_data_command(txt, chat_id, unit)
+                            if txt.lower().statswith("owe"):
+                                execute_owe_command(txt, chat_id, unit)
+                            elif txt.lower().statswith("capex "):
+                                execute_capex_command(txt, chat_id)
+                            else:
+                                broadcast_msg(chat_id, "No such command exists..")
     except:
         broadcast_msg(
             chat_id,

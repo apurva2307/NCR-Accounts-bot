@@ -6,7 +6,7 @@ from capexCommands import execute_capex_command
 import os
 
 
-def execute_data_command(command, chat_id, unit):
+def execute_owe_command(command, chat_id, unit):
     command = command.upper()
     options = ["BUD", "BP", "COPPY", "VAR", "VARBP", "VARCOPPY", "BUDUTIL"]
     if command[0:4] == "OWE ":
@@ -121,20 +121,20 @@ def execute_data_command(command, chat_id, unit):
                         True,
                     )
                     broadcast_msg(chat_id, message)
-    elif command[0:6] == "CAPEX ":
-        cmd = command.split(" ")
-        if len(cmd[1]) > 5 or len(cmd[1]) < 5:
-            broadcast_msg(chat_id, "Invalid input provided.")
-            return
-        data = get_capex_data(cmd[1])
-        if not data:
-            broadcast_msg(chat_id, "No data is available for given input.")
-            return
-        if "msg" in data.keys():
-            broadcast_msg(chat_id, data["msg"])
-            return
-        data1 = data["data1"]
-        execute_capex_command(data1, cmd, chat_id)
+    # elif command[0:6] == "CAPEX ":
+    #     cmd = command.split(" ")
+    #     if len(cmd[1]) > 5 or len(cmd[1]) < 5:
+    #         broadcast_msg(chat_id, "Invalid input provided.")
+    #         return
+    #     data = get_capex_data(cmd[1])
+    #     if not data:
+    #         broadcast_msg(chat_id, "No data is available for given input.")
+    #         return
+    #     if "msg" in data.keys():
+    #         broadcast_msg(chat_id, data["msg"])
+    #         return
+    #     data1 = data["data1"]
+    #     execute_capex_command(data1, cmd, chat_id)
     elif command[:9] == "GETEXCEL ":
         cmd = command.split(" ")
         if len(cmd[1]) > 5 or len(cmd[1]) < 5:
