@@ -127,9 +127,9 @@ def getMessage():
                             unit = "PRYJ"
                             txt = txt[5:]
                         if adminCmdExecuted == "No":
-                            if txt.lower().statswith("owe"):
+                            if txt.lower().startswith("owe"):
                                 execute_owe_command(txt, chat_id, unit)
-                            elif txt.lower().statswith("capex "):
+                            elif txt.lower().startswith("capex "):
                                 execute_capex_command(txt, chat_id)
                             else:
                                 broadcast_msg(chat_id, "No such command exists..")
