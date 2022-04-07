@@ -167,4 +167,4 @@ def execute_owe_command(command, chat_id, unit):
 
 
 if __name__ == "__main__":
-    execute_data_command("owe feb22 d-traction", 44114772, "NCR")
+    execute_owe_command("owe feb22 d-traction", 44114772, "NCR")

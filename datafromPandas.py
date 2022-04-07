@@ -32,7 +32,7 @@ def get_data(month):
             if i <= len(colsMap) - 1:
                 newCols[val] = colsMap[i]
             else:
-                continue
+                newCols[val] = "Skip"
         data.rename(columns=newCols, inplace=True)
         data = data[
             [
