@@ -121,6 +121,20 @@ def execute_owe_command(command, chat_id, unit):
                         True,
                     )
                     broadcast_msg(chat_id, message)
+                if cmd[3] == "BUD":
+                    puBudData = data1[pu]["budget"]
+                    puBudDataUtil = data1[pu]["budgetUtilization"]
+                    message = get_data_type_two(
+                        "Net Budget (Budget Util.) >>", puBudData, puBudDataUtil, True
+                    )
+                    broadcast_msg(chat_id, message)
+                if cmd[3] == "BP":
+                    puData = data1[pu]["toEndBp"]
+                    puDataUtil = data1[pu]["varAcBpPercent"]
+                    message = get_data_type_two(
+                        "Net BP (Var. BP in %) >>", puData, puDataUtil, True
+                    )
+                    broadcast_msg(chat_id, message)
     # elif command[0:6] == "CAPEX ":
     #     cmd = command.split(" ")
     #     if len(cmd[1]) > 5 or len(cmd[1]) < 5:
