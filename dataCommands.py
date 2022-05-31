@@ -101,6 +101,7 @@ def execute_owe_command(command, chat_id, unit):
                         return broadcast_msg(
                             chat_id, "No data is available for given input."
                         )
+
             if len(cmd) == 4:
                 if cmd[3] == "VAR":
                     puData1 = data1[pu]["varAcBp"]
@@ -125,14 +126,14 @@ def execute_owe_command(command, chat_id, unit):
                     puBudData = data1[pu]["budget"]
                     puBudDataUtil = data1[pu]["budgetUtilization"]
                     message = get_data_type_two(
-                        "Net Budget (Budget Util.) >>", puBudData, puBudDataUtil, True
+                        f"{pu} Budget (Budget Util.) >>", puBudData, puBudDataUtil, True
                     )
                     broadcast_msg(chat_id, message)
                 if cmd[3] == "BP":
                     puData = data1[pu]["toEndBp"]
                     puDataUtil = data1[pu]["varAcBpPercent"]
                     message = get_data_type_two(
-                        "Net BP (Var. BP in %) >>", puData, puDataUtil, True
+                        f"{pu} BP (Var. BP in %) >>", puData, puDataUtil, True
                     )
                     broadcast_msg(chat_id, message)
     # elif command[0:6] == "CAPEX ":
