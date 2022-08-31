@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "name": "ncr_bot",
+  "builds": [{ "src": "setup.py", "use": "@vercel/python" }],
+  "routes": [{ "src": "/(.*)", "dest": "setup.py" }]
+}
