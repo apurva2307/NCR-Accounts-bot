@@ -1,5 +1,5 @@
 from database import get_owe_data, get_capex_data
-from getExcelCommands import make_excel
+from getExcelCommands import make_excel, make_excel_pulist, make_excel_month_wise
 from helpers import *
 from dataHelpers import get_data_type_two, showSummary
 from capexCommands import execute_capex_command
@@ -177,9 +177,55 @@ def execute_owe_command(command, chat_id, unit):
             os.remove(f"{cmd[2]}.xlsx")
         else:
             broadcast_msg(chat_id, "Something went wrong. Please try again later.")
+    elif command[:11] == "GETEXCELPU ":
+        cmd = command.split(" ")
+        if len(cmd[1]) != 5 or len(cmd) != 3:
+            broadcast_msg(chat_id, "Invalid input provided.")
+            return
+        puList = cmd[2].strip().split(",")
+        puList = [f"PU{pu.strip()}" for pu in puList]
+        makeExcel = make_excel_pulist(chat_id, cmd[1].strip(), puList)
+        if not makeExcel:
+            broadcast_msg(
+                chat_id,
+                "Invalid input provided or something went wrong during data extraction.",
+            )
+            return
+        if makeExcel == "success":
+            if os.path.isfile(f"PUwisedetails_{cmd[1]}.xlsx"):
+                sendFile(
+                    chat_id,
+                    "excel",
+                    f"PUwisedetails_{cmd[1]}.xlsx",
+                    f"PUwisedetails_{cmd[1]}.xlsx",
+                )
+                os.remove(f"PUwisedetails_{cmd[1]}.xlsx")
+    elif command[:12] == "GETEXCELPUM ":
+        cmd = command.split(" ")
+        if len(cmd[1]) != 5 or len(cmd) != 3:
+            broadcast_msg(chat_id, "Invalid input provided.")
+            return
+        puList = cmd[2].strip().split(",")
+        puList = [f"PU{pu.strip()}" for pu in puList]
+        makeExcel = make_excel_month_wise(cmd[1].strip(), puList)
+        if makeExcel == "failed":
+            broadcast_msg(
+                chat_id,
+                "Invalid input provided or something went wrong during data extraction.",
+            )
+            return
+        elif makeExcel == "success":
+            if os.path.isfile(f"monthWiseDetails_{cmd[1]}.xlsx"):
+                sendFile(
+                    chat_id,
+                    "excel",
+                    f"monthWiseDetails_{cmd[1]}.xlsx",
+                    f"monthWiseDetails_{cmd[1]}.xlsx",
+                )
+                os.remove(f"monthWiseDetails_{cmd[1]}.xlsx")
     else:
         broadcast_msg(chat_id, "No such command exists..")
 
 
 if __name__ == "__main__":
-    execute_owe_command("owe feb22 d-traction", 44114772, "NCR")
+    execute_owe_command("getexcelpum oct22 1,2,10,16,62", 44114772, "NCR")
