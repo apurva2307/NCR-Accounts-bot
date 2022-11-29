@@ -228,4 +228,4 @@ def execute_owe_command(command, chat_id, unit):
 
 
 if __name__ == "__main__":
-    execute_owe_command("getexcelpum oct22 1,2,10,16,62", 44114772, "NCR")
+    execute_owe_command("getexcelpu oct22 1,2,10,16", 44114772, "NCR")

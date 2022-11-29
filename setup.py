@@ -136,7 +136,9 @@ def getMessage():
                                 execute_capex_command(txt, chat_id)
                             else:
                                 broadcast_msg(chat_id, "No such command exists..")
-    except:
+    except Exception as e:
+        print(e)
+        broadcast_admin(f"{e}")
         broadcast_msg(
             chat_id,
             "Something went wrong during execution of command, please try again later.",

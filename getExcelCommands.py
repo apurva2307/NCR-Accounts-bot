@@ -81,7 +81,8 @@ def make_excel_pulist(chat_id, month, puList, isCrore=True):
             customSheet.cell(row, 11).value = f"=F{row}/C{row}"
         wb.save(f"PUwisedetails_{month}.xlsx")
         return "success"
-    except:
+    except Exception as e:
+        print(e)
         return None
 
 
