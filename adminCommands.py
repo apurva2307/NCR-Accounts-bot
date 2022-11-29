@@ -4,7 +4,12 @@ from helpers import broadcast_msg
 
 def execute_admin_command(cmd, chat_id):
     command = cmd.lower()
-    if command[:11] == "updaterole ":
+    if command.strip() == "admin":
+        msg = "Admin commads:\n1. updaterole <chat_id>:<role> - to update any user role to admin, user, banned.\n"
+        msg += "2. deluser <chat_id> - to delete any user.\n3. updateinfo <chat_id>:<key>-<info> - to update any info for any user.\n"
+        broadcast_msg(chat_id, msg)
+        return "executed"
+    elif command[:11] == "updaterole ":
         cmds = command[11:].split(":")
         chatId = cmds[0].strip()
         role = cmds[1].strip()
