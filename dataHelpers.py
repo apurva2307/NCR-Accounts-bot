@@ -39,9 +39,23 @@ skip = [
     "CREDIT",
     "NET",
 ]
+dMap = {
+    "D3": 0,
+    "D4": 1,
+    "D5": 2,
+    "D6": 3,
+    "D7": 4,
+    "D8": 5,
+    "D9": 6,
+    "D10": 7,
+    "D11": 8,
+    "D12": 9,
+    "D13": 10,
+    "TOTAL": -1,
+}
 
 
-def highUtilStaff(monthdata, margin):
+def highUtilStaff(monthdata, demand, margin):
     result = {}
     for pu, value in monthdata.items():
         if pu == "STAFF":
@@ -49,14 +63,15 @@ def highUtilStaff(monthdata, margin):
         if pu in skip:
             continue
         if (
-            monthdata[pu]["budgetUtilization"][-1] > ((frMonth / 12) * 100) + margin
-            and monthdata[pu]["toEndActuals"][-1] > 5000
+            monthdata[pu]["budgetUtilization"][dMap[demand]]
+            > ((frMonth / 12) * 100) + margin
+            and monthdata[pu]["toEndActuals"][dMap[demand]] > 5000
         ):
-            result[pu] = monthdata[pu]["budgetUtilization"][-1]
+            result[pu] = monthdata[pu]["budgetUtilization"][dMap[demand]]
     return result
 
 
-def highUtilNonStaff(monthdata, margin):
+def highUtilNonStaff(monthdata, demand, margin):
     result = {}
     for index, pu in enumerate(monthdata.keys()):
         staffIndex = list(monthdata.keys()).index("STAFF")
@@ -64,10 +79,11 @@ def highUtilNonStaff(monthdata, margin):
             if pu in skip:
                 continue
             if (
-                monthdata[pu]["budgetUtilization"][-1] > ((frMonth / 12) * 100) + margin
-                and monthdata[pu]["toEndActuals"][-1] > 5000
+                monthdata[pu]["budgetUtilization"][dMap[demand]]
+                > ((frMonth / 12) * 100) + margin
+                and monthdata[pu]["toEndActuals"][dMap[demand]] > 5000
             ):
-                result[pu] = monthdata[pu]["budgetUtilization"][-1]
+                result[pu] = monthdata[pu]["budgetUtilization"][dMap[demand]]
     return result
 
 

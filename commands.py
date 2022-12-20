@@ -71,7 +71,7 @@ def execute_command(command, chat_id):
         item3 = "6. owe dec21 bp - to get BP upto a particular month along with variation of actuals with bp\n7. owe dec21 bud - to get Budget upto a particular month along with budget utilization\n"
         item4 = "8. JHS owe oct22 - to execute all above OWE commands for a particular division\n9. getexcel dec21 pu32 - to get summary excel sheet for a particular month for given PU\n"
         item5 = "10. getexcelpu oct22 1,10,12,27,32 - to get summary excel sheet for a particular month for given PU list\n11. getexcelpum oct22 1,10,12,27,32 - to get summary excel sheet for month-wise expenditure upto a particular month for given PU list\n"
-        item5 = "12. owe nov22 excess excessMargin - to get summary of excess budget utilization for various PUs for a particular month\n"
+        item5 = "12. owe nov22 excess excessMargin - to get summary of excess budget utilization for various PUs for a particular month\n13. owe nov22 excess D3 excessMargin - to get summary of excess budget utilization under particular demand for various PUs for a particular month\n"
         help_msg += item1 + item2 + item3 + item4 + item5
         broadcast_msg(chat_id, help_msg)
     elif command[:5] == "/all " and chat_id == 44114772 and command[5:8] == "img":

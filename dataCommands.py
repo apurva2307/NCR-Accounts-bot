@@ -6,6 +6,21 @@ from capexCommands import execute_capex_command
 import os
 from puMap import puMap
 
+dMap = {
+    "D3": 0,
+    "D4": 1,
+    "D5": 2,
+    "D6": 3,
+    "D7": 4,
+    "D8": 5,
+    "D9": 6,
+    "D10": 7,
+    "D11": 8,
+    "D12": 9,
+    "D13": 10,
+    "TOTAL": -1,
+}
+
 
 def execute_owe_command(command, chat_id, unit):
     command = command.upper()
@@ -115,12 +130,14 @@ def execute_owe_command(command, chat_id, unit):
                             "Kindly provide margin percentage in number format only.",
                         )
                     pumap = puMap()
-                    highUtilPuStaff = highUtilStaff(data1, margin)
-                    highUtilPuNonStaff = highUtilNonStaff(data1, margin)
-                    msg = "Excess Budget utilization under STAFF PUs:\n"
+                    highUtilPuStaff = highUtilStaff(data1, "TOTAL", margin)
+                    highUtilPuNonStaff = highUtilNonStaff(data1, "TOTAL", margin)
+                    msg = "Excess Budget utilization under STAFF PUs is as under:\n"
                     for key, value in highUtilPuStaff.items():
                         msg += f"{key} ({pumap[key]}): {value}%\n"
-                    msg += "\nExcess Budget utilization under NON-STAFF PUs:\n"
+                    msg += (
+                        "\nExcess Budget utilization under NON-STAFF PUs is as under:\n"
+                    )
                     for key, value in highUtilPuNonStaff.items():
                         msg += f"{key} ({pumap[key]}): {value}%\n"
                     broadcast_msg(chat_id, msg)
@@ -157,6 +174,32 @@ def execute_owe_command(command, chat_id, unit):
                         f"{pu} BP (Var. BP in %) >>", puData, puDataUtil, True
                     )
                     broadcast_msg(chat_id, message)
+            if len(cmd) == 5:
+                if cmd[2] == "EXCESS":
+                    margin = 0
+                    try:
+                        margin = float(cmd[4])
+                    except:
+                        broadcast_msg(
+                            chat_id,
+                            "Kindly provide margin percentage in number format only.",
+                        )
+                        return
+                    if cmd[3] not in dMap.keys():
+                        broadcast_msg(
+                            chat_id,
+                            "Kindly provide valid demand number e.g. D1, D8, D10 etc.",
+                        )
+                        return
+                    pumap = puMap()
+                    highUtilPuStaff = highUtilStaff(data1, cmd[3], margin)
+                    highUtilPuNonStaff = highUtilNonStaff(data1, cmd[3], margin)
+                    msg = f"Excess Budget utilization under {cmd[3]} under various PUs is as under:\n"
+                    for key, value in highUtilPuStaff.items():
+                        msg += f"{key} ({pumap[key]}): {value}%\n"
+                    for key, value in highUtilPuNonStaff.items():
+                        msg += f"{key} ({pumap[key]}): {value}%\n"
+                    broadcast_msg(chat_id, msg)
     # elif command[0:6] == "CAPEX ":
     #     cmd = command.split(" ")
     #     if len(cmd[1]) > 5 or len(cmd[1]) < 5:
@@ -249,4 +292,4 @@ def execute_owe_command(command, chat_id, unit):
 
 
 if __name__ == "__main__":
-    execute_owe_command("OWE NOV22 EXCESS 5", 44114772, "NCR")
+    execute_owe_command("OWE NOV22 EXCESS D15 5", 44114772, "NCR")
