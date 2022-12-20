@@ -1,5 +1,74 @@
 from database import get_owe_data
 from helpers import *
+from datetime import datetime
+
+currentMonth = datetime.now().month
+frMonth = currentMonth - 4 if currentMonth > 4 else currentMonth + 8
+skip = [
+    "PU3",
+    "PU7",
+    "PU9",
+    "PU14",
+    "PU15",
+    "PU17",
+    "PU19",
+    "PU20",
+    "PU22",
+    "PU23",
+    "PU24",
+    "PU25",
+    "PU29",
+    "PU36",
+    "PU37",
+    "PU38",
+    "PU40",
+    "PU41",
+    "PU42",
+    "PU43",
+    "PU44",
+    "PU48",
+    "PU51",
+    "PU52",
+    "PU53",
+    "PU72",
+    "PU73",
+    "PU74",
+    "PU75",
+    "NONSTAFF",
+    "GROSS",
+    "CREDIT",
+    "NET",
+]
+
+
+def highUtilStaff(monthdata, margin):
+    result = {}
+    for pu, value in monthdata.items():
+        if pu == "STAFF":
+            break
+        if pu in skip:
+            continue
+        if (
+            monthdata[pu]["budgetUtilization"][-1] > ((frMonth / 12) * 100) + margin
+            and monthdata[pu]["toEndActuals"][-1] > 5000
+        ):
+            result[pu] = monthdata[pu]["budgetUtilization"][-1]
+    return result
+
+
+def highUtilNonStaff(monthdata, margin):
+    result = {}
+    for index, pu in enumerate(monthdata.keys()):
+        staffIndex = list(monthdata.keys()).index("STAFF")
+        if index > staffIndex:
+            if pu in skip:
+                continue
+            if (
+                monthdata[pu]["budgetUtilization"][-1] > ((frMonth / 12) * 100) + margin
+                and monthdata[pu]["toEndActuals"][-1] > 5000
+            ):
+                result[pu] = monthdata[pu]["budgetUtilization"][-1]
+    return result
 
 
 def get_data_type_two(title, puData1, puData2, percent, *args):

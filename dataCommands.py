@@ -1,9 +1,10 @@
 from database import get_owe_data, get_capex_data
 from getExcelCommands import make_excel, make_excel_pulist, make_excel_month_wise
 from helpers import *
-from dataHelpers import get_data_type_two, showSummary
+from dataHelpers import get_data_type_two, showSummary, highUtilStaff, highUtilNonStaff
 from capexCommands import execute_capex_command
 import os
+from puMap import puMap
 
 
 def execute_owe_command(command, chat_id, unit):
@@ -64,6 +65,7 @@ def execute_owe_command(command, chat_id, unit):
                 "COACH-C",
                 "STATION-C",
                 "COLONY-C",
+                "EXCESS",
             ]
             if pu not in data1.keys() and pu not in options and pu not in rowsMap:
                 broadcast_msg(chat_id, "Invalid input provided.")
@@ -103,6 +105,25 @@ def execute_owe_command(command, chat_id, unit):
                         )
 
             if len(cmd) == 4:
+                if cmd[2] == "EXCESS":
+                    margin = 0
+                    try:
+                        margin = float(cmd[3])
+                    except:
+                        broadcast_msg(
+                            chat_id,
+                            "Kindly provide margin percentage in number format only.",
+                        )
+                    pumap = puMap()
+                    highUtilPuStaff = highUtilStaff(data1, margin)
+                    highUtilPuNonStaff = highUtilNonStaff(data1, margin)
+                    msg = "Excess Budget utilization under STAFF PUs:\n"
+                    for key, value in highUtilPuStaff.items():
+                        msg += f"{key} ({pumap[key]}): {value}%\n"
+                    msg += "\nExcess Budget utilization under NON-STAFF PUs:\n"
+                    for key, value in highUtilPuNonStaff.items():
+                        msg += f"{key} ({pumap[key]}): {value}%\n"
+                    broadcast_msg(chat_id, msg)
                 if cmd[3] == "VAR":
                     puData1 = data1[pu]["varAcBp"]
                     puData2 = data1[pu]["varAcBpPercent"]
@@ -228,4 +249,4 @@ def execute_owe_command(command, chat_id, unit):
 
 
 if __name__ == "__main__":
-    execute_owe_command("getexcelpu oct22 1,2,10,16", 44114772, "NCR")
+    execute_owe_command("OWE NOV22 EXCESS 5", 44114772, "NCR")

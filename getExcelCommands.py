@@ -79,6 +79,7 @@ def make_excel_pulist(chat_id, month, puList, isCrore=True):
             customSheet.cell(row, 9).value = f"=F{row}-D{row}"
             customSheet.cell(row, 10).value = f"=I{row}/D{row}"
             customSheet.cell(row, 11).value = f"=F{row}/C{row}"
+        print(wb)
         wb.save(f"PUwisedetails_{month}.xlsx")
         return "success"
     except Exception as e:
