@@ -129,6 +129,7 @@ def execute_owe_command(command, chat_id, unit):
                             chat_id,
                             "Kindly provide margin percentage in number format only.",
                         )
+                        return
                     pumap = puMap()
                     highUtilPuStaff = highUtilStaff(data1, "TOTAL", margin)
                     highUtilPuNonStaff = highUtilNonStaff(data1, "TOTAL", margin)
