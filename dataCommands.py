@@ -262,10 +262,11 @@ def execute_owe_command(command, chat_id, unit):
             broadcast_msg(chat_id, "Something went wrong. Please try again later.")
     elif command[:11] == "GETEXCELPU ":
         cmd = command.split(" ")
-        if len(cmd[1]) != 5 or len(cmd) != 3:
+        if len(cmd[1]) != 5:
             broadcast_msg(chat_id, "Invalid input provided.")
             return
-        puList = cmd[2].strip().split(",")
+        pus = "".join(cmd[2:])
+        puList = pus.strip().split(",")
         puList = [f"PU{pu.strip()}" for pu in puList]
         makeExcel = make_excel_pulist(chat_id, cmd[1].strip(), puList)
         if not makeExcel:
@@ -285,10 +286,11 @@ def execute_owe_command(command, chat_id, unit):
                 os.remove(f"PUwisedetails_{cmd[1]}.xlsx")
     elif command[:12] == "GETEXCELPUM ":
         cmd = command.split(" ")
-        if len(cmd[1]) != 5 or len(cmd) != 3:
+        if len(cmd[1]) != 5:
             broadcast_msg(chat_id, "Invalid input provided.")
             return
-        puList = cmd[2].strip().split(",")
+        pus = "".join(cmd[2:])
+        puList = pus.strip().split(",")
         puList = [f"PU{pu.strip()}" for pu in puList]
         makeExcel = make_excel_month_wise(cmd[1].strip(), puList)
         if makeExcel == "failed":
@@ -311,4 +313,5 @@ def execute_owe_command(command, chat_id, unit):
 
 
 if __name__ == "__main__":
-    execute_owe_command("OWE NOV22 EXCESS D15 5", 44114772, "NCR")
+    # execute_owe_command("OWE NOV22 EXCESS D15 5", 44114772, "NCR")
+    execute_owe_command("GETEXCELPU NOV22  1, 2, 10, 11, 32,50,51 ", 44114772, "NCR")
