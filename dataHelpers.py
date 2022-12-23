@@ -111,7 +111,7 @@ def get_data_type_two(title, puData1, puData2, percent, *args):
     return msg
 
 
-def showSummary(pu, data2):
+def showSummary(pu, data2, grant):
     puData = data2[pu]
     msg = "Figures in crores\n"
     if pu in ["IRCA", "IRFA", "IRFC", "COACH-C", "STATION-C", "COLONY-C"]:
@@ -119,7 +119,7 @@ def showSummary(pu, data2):
             if index == 0:
                 msg += f"Actuals Full Last Year: {val}\n"
             elif index == 1:
-                msg += f"Revised Grant: {val}\n"
+                msg += f"{grant}: {val}\n"
             elif index == 2:
                 msg += f"Actuals upto month COPPY: {val}\n"
             elif index == 3:
@@ -135,7 +135,7 @@ def showSummary(pu, data2):
             if index == 0:
                 msg += f"Actuals Full Last Year: {val}\n"
             elif index == 1:
-                msg += f"Revised Grant: {val}\n"
+                msg += f"{grant}: {val}\n"
             elif index == 2:
                 msg += f"Actuals upto month COPPY: {val}\n"
             elif index == 4:

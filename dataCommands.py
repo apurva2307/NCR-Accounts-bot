@@ -112,7 +112,25 @@ def execute_owe_command(command, chat_id, unit):
                 if pu in rowsMap:
                     if "data2" in data.keys():
                         data2 = data["data2"]
-                        msg = showSummary(pu, data2)
+                        firstMonths = [
+                            "APR",
+                            "MAY",
+                            "JUN",
+                            "JUL",
+                            "AUG",
+                            "SEP",
+                            "OCT",
+                            "NOV",
+                        ]
+                        lastMonths = ["DEC", "JAN", "FEB"]
+                        grant = (
+                            "Budget Grant (SL)"
+                            if cmd[1][:3] in firstMonths
+                            else "Revised Grant"
+                            if cmd[1][:3] in lastMonths
+                            else "Final Grant"
+                        )
+                        msg = showSummary(pu, data2, grant)
                         broadcast_msg(chat_id, msg)
                     else:
                         return broadcast_msg(
