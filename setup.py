@@ -7,7 +7,6 @@ from commands import *
 from database import addToDatabase, delete_single_user, get_single_user
 from dataCommands import execute_owe_command
 from capexCommands import execute_capex_command
-from geminiai import get_ai_res
 
 app = Flask(__name__)
 API_KEY = config("API_KEY")
@@ -136,8 +135,7 @@ def getMessage():
                             elif txt.lower().startswith("capex "):
                                 execute_capex_command(txt, chat_id)
                             else:
-                                res = get_ai_res(txt)
-                                broadcast_msg(chat_id, f"{str(res)}")
+                                broadcast_msg(chat_id, "No such command exists..")
     except Exception as e:
         print(e)
         broadcast_admin(f"{e}")
