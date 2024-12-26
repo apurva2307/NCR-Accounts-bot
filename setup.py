@@ -7,6 +7,9 @@ from commands import *
 from database import addToDatabase, delete_single_user, get_single_user
 from dataCommands import execute_owe_command
 from capexCommands import execute_capex_command
+from markupCommands import execute_markup_query, execute_markup
+from markupHelpers import parse_callback_query
+from constants import markup_commands
 
 app = Flask(__name__)
 API_KEY = config("API_KEY")
@@ -20,7 +23,7 @@ def set_webhook():
     setWebhook = f"{API_URL}/setWebhook"
     options = {
         "url": webhook_url,
-        "allowed_updates": ["message"],
+        "allowed_updates": ["message", "callback_query", "inline_query", "message_reaction", "message_reaction_count", "poll", "poll_answer", "my_chat_member", "chat_member"],
         "drop_pending_updates": True,
     }
     requests.post(setWebhook, json=options)
@@ -61,81 +64,91 @@ def hello_world():
 def getMessage():
     req = request.get_json()
     print("req>>", req)
-    chat_id, txt, first_name, username = parse_request(req)
+    
     try:
-        if "text" in req["message"].keys():
-            if txt == "/start" or txt == "/subscribe":
-                response = addToDatabase(chat_id, username, first_name)
-                json_msg = json.loads(response)
-                if "msg" in json_msg.keys():
+        if "callback_query" in req.keys():
+            chat_id, query_id, markup_msg_id, reply_markup, markup_header, data = parse_callback_query(
+                req
+            )
+            execute_markup_query(chat_id, query_id, reply_markup, markup_header, data)
+            delete_msg(chat_id, markup_msg_id)
+        elif "message" in req.keys():
+            chat_id, txt, first_name, username = parse_request(req)
+            if "text" in req["message"].keys():
+                if txt == "/start" or txt == "/subscribe":
+                    response = addToDatabase(chat_id, username, first_name)
+                    json_msg = json.loads(response)
+                    if "msg" in json_msg.keys():
+                        if (
+                            json_msg["msg"]
+                            == f"chat_Id {chat_id} already exists for NCR_Accounts bot."
+                        ):
+                            broadcast_msg(
+                                chat_id,
+                                "You have already subscribed for NCR_Accounts updates service.",
+                            )
+                        else:
+                            broadcast_msg("44114772", json.dumps(json_msg))
+                    else:
+                        broadcast_msg(
+                            chat_id,
+                            "Thanks for subscribing for NCR_Accounts updates service. Kindly wait for approval from admin, then only you can use services of this bot.",
+                        )
+                    broadcast_admin(response)
+                    broadcast_admin(chat_id)
+                    broadcast_admin(f"@{username}")
+                elif txt == "/unsubscribe":
+                    response = delete_single_user(chat_id)
                     if (
-                        json_msg["msg"]
-                        == f"chat_Id {chat_id} already exists for NCR_Accounts bot."
+                        response
+                        == f"chat Id {chat_id} for NCR_Accounts bot is successfully deleted."
                     ):
                         broadcast_msg(
                             chat_id,
-                            "You have already subscribed for NCR_Accounts updates service.",
+                            "You are successfully unsubscribed from NCR_Accounts updates service.",
                         )
-                    else:
-                        broadcast_msg("44114772", json.dumps(json_msg))
+                    broadcast_admin(response)
+                    broadcast_admin(chat_id)
+                    broadcast_admin(f"@{username}")
                 else:
-                    broadcast_msg(
-                        chat_id,
-                        "Thanks for subscribing for NCR_Accounts updates service. Kindly wait for approval from admin, then only you can use services of this bot.",
-                    )
-                broadcast_admin(response)
-                broadcast_admin(chat_id)
-                broadcast_admin(f"@{username}")
-            elif txt == "/unsubscribe":
-                response = delete_single_user(chat_id)
-                if (
-                    response
-                    == f"chat Id {chat_id} for NCR_Accounts bot is successfully deleted."
-                ):
-                    broadcast_msg(
-                        chat_id,
-                        "You are successfully unsubscribed from NCR_Accounts updates service.",
-                    )
-                broadcast_admin(response)
-                broadcast_admin(chat_id)
-                broadcast_admin(f"@{username}")
-            else:
-                res = get_single_user(chat_id)
-                # res = {"role": "admin"}
-                if not res or type(res) == str:
-                    return "!", 200
-                role = res["role"]
-                if role == "banned":
-                    broadcast_msg(
-                        chat_id,
-                        "You are not authorized to access services of this bot. Kindly contact admin @Dream_Big18 for getting access.",
-                    )
-                elif role == "user" or role == "admin":
-                    if is_command(txt):
-                        execute_command(txt, chat_id)
-                    else:
-                        adminCmdExecuted = "No"
-                        if role == "admin":
-                            adminCmdExecuted = execute_admin_command(txt, chat_id)
-                        unit = "NCR"
-                        if txt.upper().startswith("JHS "):
-                            unit = "JHS"
-                            txt = txt[4:]
-                        elif txt.upper().startswith("AGC "):
-                            unit = "AGC"
-                            txt = txt[4:]
-                        elif txt.upper().startswith("PRYJ "):
-                            unit = "PRYJ"
-                            txt = txt[5:]
-                        if adminCmdExecuted == "No":
-                            if txt.lower().startswith("owe") or txt.lower().startswith(
-                                "get"
-                            ):
-                                execute_owe_command(txt, chat_id, unit)
-                            elif txt.lower().startswith("capex "):
-                                execute_capex_command(txt, chat_id)
-                            else:
-                                broadcast_msg(chat_id, "No such command exists..")
+                    res = get_single_user(chat_id)
+                    # res = {"role": "admin"}
+                    if not res or type(res) == str:
+                        return "!", 200
+                    role = res["role"]
+                    if role == "banned":
+                        broadcast_msg(
+                            chat_id,
+                            "You are not authorized to access services of this bot. Kindly contact admin @Dream_Big18 for getting access.",
+                        )
+                    elif role == "user" or role == "admin":
+                        if is_command(txt):
+                            execute_command(txt, chat_id)
+                        else:
+                            adminCmdExecuted = "No"
+                            if role == "admin":
+                                adminCmdExecuted = execute_admin_command(txt, chat_id)
+                            unit = "NCR"
+                            if txt.upper().startswith("JHS "):
+                                unit = "JHS"
+                                txt = txt[4:]
+                            elif txt.upper().startswith("AGC "):
+                                unit = "AGC"
+                                txt = txt[4:]
+                            elif txt.upper().startswith("PRYJ "):
+                                unit = "PRYJ"
+                                txt = txt[5:]
+                            if adminCmdExecuted == "No":
+                                if txt.lower() in markup_commands:
+                                    execute_markup(chat_id, txt)
+                                elif txt.lower().startswith("owe") or txt.lower().startswith(
+                                    "get"
+                                ):
+                                    execute_owe_command(txt, chat_id, unit)
+                                elif txt.lower().startswith("capex "):
+                                    execute_capex_command(txt, chat_id)
+                                else:
+                                    broadcast_msg(chat_id, "No such command exists..")
     except Exception as e:
         print(e)
         broadcast_admin(f"{e}")

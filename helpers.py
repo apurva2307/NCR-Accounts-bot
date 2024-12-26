@@ -5,6 +5,11 @@ from database import get_all_users, get_single_user
 API_KEY = config("API_KEY")
 API_URL = f"https://api.telegram.org/bot{API_KEY}"
 
+def delete_msg(chat_id, msg_id):
+    to_url = f"{API_URL}/deleteMessage"
+    payload = {"chat_id": chat_id, "message_id": msg_id}
+    resp = requests.post(to_url, json=payload)
+    return json.dumps(resp.json())
 
 def sendFile(chat_id, type, file_path, file_name):
     url = f"{API_URL}/send"
