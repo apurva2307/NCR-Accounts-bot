@@ -1,8 +1,8 @@
-from datafromPandas import get_data
+from helpers.datafromPandas import get_data
 import pandas
-from helpers import broadcast_msg
-from puPhList import getPHs
-from datafromPandas import *
+from helpers.helpers import broadcast_msg
+from constants.puPhList import getPHs
+from helpers.datafromPandas import *
 
 
 def execute_capex_command(command, chat_id):
@@ -122,8 +122,4 @@ def execute_capex_command(command, chat_id):
 
 
 if __name__ == "__main__":
-    from capexData import getCapexData
-
-    data1 = getCapexData()["monthData"]["data1"]
-    res = execute_capex_command(data1, ["CAPEX", "DEC21", "BUDGET"], "567567")
-    print(res)
+    print("hi")

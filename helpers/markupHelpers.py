@@ -1,5 +1,5 @@
 import requests
-from constants import API_URL
+from constants.constants import API_URL
 
 
 def parse_callback_query(req):
