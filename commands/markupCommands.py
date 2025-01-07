@@ -87,7 +87,7 @@ def execute_markup_query(chat_id, query_id, reply_markup, markup_header, data):
             resp = requests.post(to_url, json=payload)
             return resp
         elif markup_header == "To get staff Onroll position, choose any option:":
-            onroll = get_staff_strength(data)
+            onroll = get_staff_strength("Staff", data)
             broadcast_msg(chat_id, onroll)
             answer_callback_query(query_id, "Done.")
         elif markup_header == "To get officers Onroll position, choose any option:":
