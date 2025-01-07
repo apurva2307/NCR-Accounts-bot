@@ -1,5 +1,5 @@
 from database import update_user_role, update_user_info, delete_single_user
-from helpers import broadcast_msg
+from helpers.helpers import broadcast_msg
 
 
 def execute_admin_command(cmd, chat_id):
