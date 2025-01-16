@@ -10,6 +10,7 @@ from commands.capexCommands import execute_capex_command
 from commands.markupCommands import execute_markup_query, execute_markup
 from helpers.markupHelpers import parse_callback_query
 from constants.constants import markup_commands
+from helpers.chatBot import get_gpt_output
 
 app = Flask(__name__)
 API_KEY = config("API_KEY")
@@ -147,6 +148,9 @@ def getMessage():
                                     execute_owe_command(txt, chat_id, unit)
                                 elif txt.lower().startswith("capex "):
                                     execute_capex_command(txt, chat_id)
+                                elif len(txt.split(" ")) > 4:
+                                    output = get_gpt_output(txt)
+                                    broadcast_msg(chat_id, f"{output}")
                                 else:
                                     broadcast_msg(chat_id, "No such command exists..")
     except Exception as e:
